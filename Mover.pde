@@ -1,15 +1,19 @@
 class Mover{
   
-  public int y;
-  public int x;
-  public int dy = 0;
-  public int dx = 5;
-  public int size = 50;
+  public float y;
+  public float x;
+  public float dy = 0;
+  public float dx = 5;
+  public float sizex = 50;
+  public float sizey = 70;
+  public PImage f;
   
-  Mover(){
+  Mover(PImage a){
     
-    x = 0 + size;
-    y = height/2;
+    x = 0 + sizex;
+    y = height - sizey/2;
+    
+    f = a;
     
   }
   
@@ -18,11 +22,17 @@ class Mover{
     y += dy;
     x += dx;
     
+    if(x <= 0 + (sizex/2) || x >= width - (sizex/2)){
+      
+      dx = dx * -1;
+      
+    }
+    
   }
   
   public void display(){
     
-    ellipse(x,y,size,size);
+    image(f,x,y,sizex,sizey);
     
   }
   
