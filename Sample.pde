@@ -17,9 +17,12 @@ void setup()
   
   Collectable fuckYou = new Collectable("obj", "back04_apple.png");
 
-
   Scene start = new Scene("start", "images.png");
+  
   MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height/2, 50, 50, "arrowUp.png", "bed");
+  
+  startGame.setHoverImage("Blue.png");
+  
   start.addGameObject(startGame);
 
   //Creating the scene
