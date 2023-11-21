@@ -23,7 +23,7 @@ class SceneManager {
       scenesStack.push(scenes.get(sceneName));
     }
     else {
-      throw new Exception("Scene not found with name: "+ sceneName + "." + 
+      throw new Exception("Scene not found with name: "+ sceneName + ". " + 
                            "Make sure it was added to the sceneManager.");
     }
   }

@@ -38,7 +38,8 @@ class Scene {
   }
   
   public void draw(int wwidth, int wheight) {
-    image(backgroundImage, 0, 0, wwidth, wheight);
+    imageMode(CENTER);
+    image(backgroundImage, width/2, height/2, wwidth, wheight);
     for(GameObject object : gameObjects) {
       object.draw();
     }
