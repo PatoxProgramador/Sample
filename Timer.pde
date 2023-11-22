@@ -27,4 +27,6 @@ class Timer {
 
     time -= 1/frameRate;
   }
+  
+  
 }

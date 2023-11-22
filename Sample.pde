@@ -7,6 +7,9 @@ final InventoryManager inventoryManager = new InventoryManager();
 Timer timer;
 
 boolean showTimer = false;
+boolean gameStarted = false;
+
+int tintAmount = 255;
 
 void settings()
 {
@@ -19,7 +22,7 @@ void setup()
 
   timer = new Timer(2, false);
 
-  
+
 
   Collectable apple = new Collectable("apple", "apple.png");
 
@@ -35,7 +38,7 @@ void setup()
   Scene introduction = new Scene("intro", "white.png");
 
 
-//---------------------------------------------------
+  //---------------------------------------------------
 
   //Creating the scene
   Scene spawn = new Scene("spawn", "spawn.png");
@@ -53,10 +56,10 @@ void setup()
   RequireObject requireApple = new RequireObject("requiresApple_spawn", 206, 461, 50, 50, "zoom.png", "You need an Apple before getting here!", apple, toForest);
   requireApple.setHoverImage("zoomIn.png");
   spawn.addGameObject(requireApple);
-  
-  
 
-//-----------------------------------------------------
+
+
+  //-----------------------------------------------------
 
   Scene hallway = new Scene("hallway", "hallway.png");
   MoveToSceneObject toSpawn = new MoveToSceneObject("goBack_spawn", 350, 700, 50, 50, "arrowDown.png", true);
@@ -65,7 +68,7 @@ void setup()
   hallway.addGameObject(toHouse);
 
 
-//-------------------------------------------------------
+  //-------------------------------------------------------
 
 
   Scene house = new Scene("house", "house.png");
@@ -73,8 +76,8 @@ void setup()
   house.addGameObject(backToHallway);
   CollectableObject grabApple = new CollectableObject("apple", 325, 366, 123, 101, apple);
   house.addGameObject(grabApple);
-  
-//-----------------------------------------------------
+
+  //-----------------------------------------------------
 
   Scene forest = new Scene("forest", "forest.png");
 
@@ -82,16 +85,16 @@ void setup()
   forest.addGameObject(winObject);
 
 
-//------------------------------------------------------
+  //------------------------------------------------------
   Scene winScene = new Scene("win scene", "trophy.png");
-  
-//-----------------------------------------------------
+
+  //-----------------------------------------------------
 
   Scene cards = new Scene("cards", "cards.png");
   MoveToSceneObject backToSpawn = new MoveToSceneObject("goBack_spawn", 203, 753, 50, 50, "arrowDown.png", true);
   cards.addGameObject(backToSpawn);
-  
-//--------------------------------------------------------
+
+  //--------------------------------------------------------
 
 
   sceneManager.addScene(start);
@@ -106,6 +109,7 @@ void setup()
 
 void draw()
 {
+  background(122, 122, 122);
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
     timer.timerStarted = true;
 
@@ -114,6 +118,7 @@ void draw()
         sceneManager.goToScene("spawn");
         timer.setTimer(65);
         showTimer = true;
+        gameStarted = true;
       }
       catch(Exception e) {
         println(e.getMessage());
@@ -135,11 +140,13 @@ void draw()
     if (timer.getTime() > 60) {
       fill(0);
     } else {
-      fill(second()%2==0 ? 0 : color(255,0,0));
+      fill(second()%2==0 ? 0 : color(255, 0, 0));
     }
     textSize(24);
     text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
   }
+  
+  if(gameStarted) tintImage();
 }
 
 void mouseMoved() {
@@ -148,4 +155,11 @@ void mouseMoved() {
 
 void mouseClicked() {
   sceneManager.getCurrentScene().mouseClicked();
+}
+
+void tintImage() {
+  if(((int)timer.getTime()%5) == 0) tintAmount -= 51;
+      
+  tint(tintAmount);
+  
 }
