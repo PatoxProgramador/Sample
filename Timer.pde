@@ -1,34 +1,30 @@
-class Timer{
-   
+class Timer {
+
   float time;
-  
-  Timer(float initial){ //cunstructor initialize a timer
-    
+  boolean timerStarted;
+
+  Timer(float initial, boolean started) { //cunstructor initialize a timer
+    timerStarted = started;
     time = initial;
-    
   }
-  
-  float getTime(){ //returns the current time
-    
+
+
+  float getTime() { //returns the current time
+
     return time;
-    
   }
-  
-  void setTimer(float initial){ //restart initialize, without having to redeclare it
-    
+
+  void setTimer(float initial) { //restart initialize, without having to redeclare it
+
     time = initial;
-    
   }
   //count up or down
-  void countUp(){
-    
+  void countUp() {
+
     time += 1/frameRate;
-    
   }
-  void countDown(){
-    
+  void countDown() {
+
     time -= 1/frameRate;
-    
   }
-  
 }
