@@ -92,6 +92,7 @@ void draw()
   sceneManager.getCurrentScene().draw(wwidth, wheight);
   sceneManager.getCurrentScene().updateScene();
   inventoryManager.clearMarkedForDeathCollectables();
+  inventoryManager.showInventory();
 }
 
 void mouseMoved() {
