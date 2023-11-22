@@ -1,10 +1,7 @@
 /*Objective for prototype:
 ** re-Organise arrows with screen
-** Prevent timer to go to 0
+** when timer reaches 0, gameover scene
 ** make the lock challenge
-** adjust colour system, 
-i placed a print statement there,
-where is telling me colour is going negative
 */
 int wwidth = 1920;
 int wheight = 1080;
@@ -33,8 +30,6 @@ void setup()
 {
 
   timer = new Timer(2, false);
-
-
 
   Collectable apple = new Collectable("apple", "apple.png");
 
@@ -137,8 +132,10 @@ void draw()
       }
     }
   }
-  if (timer.timerStarted) {
+  if (timer.timerStarted && timer.getTime() > 0) {
+    
     timer.countDown();
+    
   }
 
 
