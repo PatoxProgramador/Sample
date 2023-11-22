@@ -1,5 +1,5 @@
-int wwidth = 800;
-int wheight = 800;
+int wwidth = 1920;
+int wheight = 1080;
 
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
@@ -10,8 +10,8 @@ boolean showTimer = false;
 
 void settings()
 {
-
-  size(wwidth, wheight);
+  fullScreen();
+  //size(wwidth, wheight);
 }
 
 void setup()
