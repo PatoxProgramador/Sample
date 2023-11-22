@@ -1,3 +1,11 @@
+/*Objective for prototype:
+** re-Organise arrows with screen
+** Prevent timer to go to 0
+** make the lock challenge
+** adjust colour system, 
+i placed a print statement there,
+where is telling me colour is going negative
+*/
 int wwidth = 1920;
 int wheight = 1080;
 
@@ -159,7 +167,7 @@ void mouseClicked() {
 
 void tintImage() {
   if(((int)timer.getTime()%5) == 0) tintAmount -= 51;
-      
+      System.out.println(tintAmount);
   tint(tintAmount);
   
 }
