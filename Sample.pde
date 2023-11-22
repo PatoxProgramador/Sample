@@ -18,6 +18,10 @@ boolean showTimer = false;
 boolean gameStarted = false;
 
 int tintAmount = 255;
+//counter for tint to work variables
+float lastSpawnTime = 0;
+//SpawnInterval is in milliseconds
+float spawnInterval = 1000;
 
 void settings()
 {
@@ -153,8 +157,14 @@ void draw()
     textSize(24);
     text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
   }
-  
-  if(gameStarted) tintImage();
+  //movesprevents draw from instantly repeating the code in less than a second
+   if (millis() - lastSpawnTime > spawnInterval) {
+    
+    lastSpawnTime = millis();
+    
+    if(gameStarted) tintImage();
+    
+  } 
 }
 
 void mouseMoved() {
@@ -166,8 +176,10 @@ void mouseClicked() {
 }
 
 void tintImage() {
-  if(((int)timer.getTime()%5) == 0) tintAmount -= 51;
+  if(((int)timer.getTime()%5) == 0) {tintAmount -= 51;}
       System.out.println(tintAmount);
+      if(tintAmount > 0){
   tint(tintAmount);
+      }
   
 }
