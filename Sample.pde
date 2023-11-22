@@ -8,13 +8,18 @@ int wheight = 1080;
 
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
-
+//timer
 Timer timer;
+
+float startTime;
 
 boolean showTimer = false;
 boolean gameStarted = false;
-
-int tintAmount = 255;
+//equation of time and tintamount change in colour correlation
+int tintAmount;
+int ratio;
+int division;
+int change;
 //counter for tint to work variables
 float lastSpawnTime = 0;
 //SpawnInterval is in milliseconds
@@ -28,6 +33,12 @@ void settings()
 
 void setup()
 {
+  
+  tintAmount = 255;
+  startTime = 120;
+  division = 30;
+  ratio = (int)startTime/division;
+  change = tintAmount/ratio;
 
   timer = new Timer(2, false);
 
@@ -123,7 +134,7 @@ void draw()
     if (timer.getTime() <= 0) {
       try {
         sceneManager.goToScene("spawn");
-        timer.setTimer(65);
+        timer.setTimer(startTime);
         showTimer = true;
         gameStarted = true;
       }
@@ -136,9 +147,7 @@ void draw()
     
     timer.countDown();
     
-  }
-
-
+  }//else gameover
 
   sceneManager.getCurrentScene().draw(wwidth, wheight);
   sceneManager.getCurrentScene().updateScene();
@@ -174,9 +183,9 @@ void mouseClicked() {
 
 void tintImage() {
   
-  if(((int)timer.getTime()%5) == 0) {
+  if(((int)timer.getTime()%division) == 0) {
   
-  tintAmount -= 51;
+  tintAmount -= change;
 
 }
 //prevents colour from being glitchy yellow
