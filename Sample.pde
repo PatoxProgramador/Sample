@@ -154,7 +154,7 @@ void draw()
     textSize(24);
     text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
   }
-  //movesprevents draw from instantly repeating the code in less than a second
+  //another way of working with time flow (extracted from apple project)
    if (millis() - lastSpawnTime > spawnInterval) {
     
     lastSpawnTime = millis();
@@ -173,10 +173,17 @@ void mouseClicked() {
 }
 
 void tintImage() {
-  if(((int)timer.getTime()%5) == 0) {tintAmount -= 51;}
-      System.out.println(tintAmount);
+  
+  if(((int)timer.getTime()%5) == 0) {
+  
+  tintAmount -= 51;
+
+}
+//prevents colour from being glitchy yellow
       if(tintAmount > 0){
+        
   tint(tintAmount);
+  
       }
   
 }
