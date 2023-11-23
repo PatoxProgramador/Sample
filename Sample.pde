@@ -136,7 +136,7 @@ void setup()
   //-----------------------------------------------------
 
   Scene cards = new Scene("cards", "cards.png");
-  MoveToSceneObject backToSpawn = new MoveToSceneObject("goBack_spawn", 203, 753, 50, 50, "arrowDown.png", true);
+  MoveToSceneObject backToSpawn = new MoveToSceneObject("goBack_spawn", 1100, 1000, 50, 50, "arrowDown.png", true);
   cards.addGameObject(backToSpawn);
 
   //--------------------------------------------------------
