@@ -26,7 +26,7 @@ int change;
 //counter for tint to work variables
 float lastSpawnTime = 0;
 //SpawnInterval is in milliseconds
-float spawnInterval = 1000;
+float spawnInterval = 5000;
 
 void settings()
 {
@@ -37,9 +37,10 @@ void settings()
 void setup()
 {
   
+  lastSpawnTime = 0;
   tintAmount = 255;
-  startTime = 120;
-  division = 30;
+  startTime = 30;
+  division = 5;
   ratio = (int)startTime/division;
   change = tintAmount/ratio;
 
@@ -130,16 +131,20 @@ void setup()
 
 void draw()
 {
+  
   background(122, 122, 122);
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
     timer.timerStarted = true;
 
     if (timer.getTime() <= 0) {
       try {
+        
         sceneManager.goToScene("spawn");
         timer.setTimer(startTime);
         showTimer = true;
         gameStarted = true;
+        lastSpawnTime = millis();
+        
       }
       catch(Exception e) {
         println(e.getMessage());
@@ -167,13 +172,17 @@ void draw()
     text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
   }
   //another way of working with time flow (extracted from apple project)
+  
    if (millis() - lastSpawnTime > spawnInterval) {
     
     lastSpawnTime = millis();
     
     if(gameStarted) tintImage();
-    
+       
   } 
+  
+  
+    
 }
 
 void mouseMoved() {
@@ -186,11 +195,8 @@ void mouseClicked() {
 
 void tintImage() {
   
-  if(((int)timer.getTime()%division) == 0) {
-  
   tintAmount -= change;
 
-}
 //prevents colour from being glitchy yellow
       if(tintAmount > 0){
         
