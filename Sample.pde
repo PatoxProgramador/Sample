@@ -1,6 +1,3 @@
-/*Objective for prototype:
- ** re-Organise arrows with screen
- */
  import processing.sound.*;
  
 int wwidth = 1920;
@@ -83,16 +80,17 @@ void setup()
   Scene spawn = new Scene("spawn", "spawn.png");
 
   //Move scenes arrows
-  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 708, 445, 50, 50, "arrowRight.png", "hallway");
+  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 1826, 600, 50, 50, "arrowRight.png", "hallway");
   spawn.addGameObject(toHallway);
-  MoveToSceneObject toCards = new MoveToSceneObject("goToCards_spawn", 388, 440, 50, 50, "arrowUp.png", "cards");
+  
+  MoveToSceneObject toCards = new MoveToSceneObject("goToCards_spawn", 850, 610, 50, 50, "arrowUp.png", "cards");
   spawn.addGameObject(toCards);
 
   //Replacement when apple is obtained
-  MoveToSceneObject toForest = new MoveToSceneObject("goToForest_spawn", 206, 461, 50, 50, "arrowUp.png", "forest");
+  MoveToSceneObject toForest = new MoveToSceneObject("goToForest_spawn", 500, 590, 50, 50, "arrowUp.png", "forest");
 
   //Requires apple puzzle
-  RequireObject requireApple = new RequireObject("requiresApple_spawn", 206, 461, 50, 50, "zoom.png", "You need an Apple before getting here!", apple, toForest);
+  RequireObject requireApple = new RequireObject("requiresApple_spawn", 500, 590, 50, 50, "zoom.png", "You need an Apple before getting here!", apple, toForest);
   requireApple.setHoverImage("zoomIn.png");
   spawn.addGameObject(requireApple);
 
@@ -101,9 +99,11 @@ void setup()
   //-----------------------------------------------------
 
   Scene hallway = new Scene("hallway", "hallway.png");
-  MoveToSceneObject toSpawn = new MoveToSceneObject("goBack_spawn", 350, 700, 50, 50, "arrowDown.png", true);
+  
+  MoveToSceneObject toSpawn = new MoveToSceneObject("goBack_spawn", 900, 1000, 50, 50, "arrowDown.png", true);
   hallway.addGameObject(toSpawn);
-  MoveToSceneObject toHouse = new MoveToSceneObject("goToSceneHouse_hallway", 441, 494, 50, 50, "arrowUp.png", "house");
+  
+  MoveToSceneObject toHouse = new MoveToSceneObject("goToSceneHouse_hallway", 1115, 700, 50, 50, "arrowUp.png", "house");
   hallway.addGameObject(toHouse);
 
 
@@ -111,9 +111,11 @@ void setup()
 
 
   Scene house = new Scene("house", "house.png");
-  MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_house", 203, 673, 50, 50, "arrowDown.png", true);
+  
+  MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_house", 550, 860, 50, 50, "arrowDown.png", true);
   house.addGameObject(backToHallway);
-  CollectableObject grabApple = new CollectableObject("apple", 325, 366, 123, 101, apple);
+  
+  CollectableObject grabApple = new CollectableObject("apple", 930, 550, 200, 170, apple);
   house.addGameObject(grabApple);
 
   //-----------------------------------------------------
