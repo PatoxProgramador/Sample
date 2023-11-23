@@ -39,7 +39,7 @@ void setup()
   
   lastSpawnTime = 0;
   tintAmount = 255;
-  startTime = 30;
+  startTime = 20;
   division = 5;
   ratio = (int)startTime/division;
   change = tintAmount/ratio;
@@ -49,13 +49,13 @@ void setup()
   Collectable apple = new Collectable("apple", "apple.png");
 
   Scene start = new Scene("start", "start.png");
+  Scene gameOver = new Scene("gameOver", "white.png");
 
   MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height/2, 50, 50, "arrowUp.png", "intro");
 
   startGame.setHoverImage("Blue.png");
 
   start.addGameObject(startGame);
-
 
   Scene introduction = new Scene("intro", "white.png");
 
@@ -127,6 +127,8 @@ void setup()
   sceneManager.addScene(forest);
   sceneManager.addScene(cards);
   sceneManager.addScene(winScene);
+  sceneManager.addScene(gameOver);
+  
 }
 
 void draw()
@@ -155,7 +157,22 @@ void draw()
     
     timer.countDown();
     
-  }//else gameover
+  }else if(gameStarted && timer.getTime() <= 0){
+    
+    try{
+    
+    sceneManager.goToScene("gameOver");
+
+    tint(255);
+    
+    
+    }catch(Exception e){
+      
+      println(e.getMessage());
+      
+    }
+    
+  }
 
   sceneManager.getCurrentScene().draw(wwidth, wheight);
   sceneManager.getCurrentScene().updateScene();
@@ -201,6 +218,8 @@ void tintImage() {
       if(tintAmount > 0){
         
   tint(tintAmount);
+  
+  //System.out.println(tintAmount);
   
       }
   
