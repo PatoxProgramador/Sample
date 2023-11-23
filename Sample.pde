@@ -1,7 +1,10 @@
 /*Objective for prototype:
 ** re-Organise arrows with screen
 ** when timer reaches 0, gameover scene
-** make the lock challenge
+** make the lock challenge:
+when apple collected, 
+give a numbered note, 
+click the correct figures to open the path to win
 */
 int wwidth = 1920;
 int wheight = 1080;
