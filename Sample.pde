@@ -1,11 +1,11 @@
 /*Objective for prototype:
-** re-Organise arrows with screen
-** when timer reaches 0, gameover scene
-** make the lock challenge:
-when apple collected, 
-give a numbered note, 
-click the correct figures to open the path to win
-*/
+ ** re-Organise arrows with screen
+ ** when timer reaches 0, gameover scene
+ ** make the lock challenge:
+ when apple collected,
+ give a numbered note,
+ click the correct figures to open the path to win
+ */
 int wwidth = 1920;
 int wheight = 1080;
 
@@ -26,7 +26,14 @@ int change;
 //counter for tint to work variables
 float lastSpawnTime = 0;
 //SpawnInterval is in milliseconds
-float spawnInterval = 5000;
+float spawnInterval = 30000;
+
+Safe safe1;
+Safe safe2;
+Safe safe3;
+
+String code = "one.pngone.pngthree.png";
+
 
 void settings()
 {
@@ -36,17 +43,24 @@ void settings()
 
 void setup()
 {
-  
+
+  safe1 = new Safe(width/2 - 100, height/2 - 200, 100);
+  safe2 = new Safe(width/2, height/2 - 200, 100);
+  safe3 = new Safe(width/2 + 100, height/2 - 200, 100);
+
+  //safe.submitCode("one.pngone.pngthree.png");
+  //println(safe.code);
+
   lastSpawnTime = 0;
   tintAmount = 255;
-  startTime = 20;
+  startTime = 120;
   division = 5;
   ratio = (int)startTime/division;
   change = tintAmount/ratio;
 
-  timer = new Timer(2, false);
+  timer = new Timer(1, false);
 
-  Collectable apple = new Collectable("apple", "apple.png");
+  Collectable apple = new Collectable("apple", "Note.png");
 
   Scene start = new Scene("start", "start.png");
   Scene gameOver = new Scene("gameOver", "white.png");
@@ -103,8 +117,12 @@ void setup()
 
   Scene forest = new Scene("forest", "forest.png");
 
-  MoveToSceneObject winObject = new MoveToSceneObject("win object", width/2, height/2, 100, 100, "medal1.png", "win scene");
-  forest.addGameObject(winObject);
+  //MoveToSceneObject winObject = new MoveToSceneObject("win object", width/2, height/2, 100, 100, "medal1.png", "win scene");
+  //forest.addGameObject(winObject);
+
+  GameObject submitButton = new GameObject("submit", width/2, height/2-100, 300, 100, "submit.png");
+  forest.addGameObject(submitButton);
+
 
 
   //------------------------------------------------------
@@ -128,25 +146,23 @@ void setup()
   sceneManager.addScene(cards);
   sceneManager.addScene(winScene);
   sceneManager.addScene(gameOver);
-  
 }
 
 void draw()
 {
-  
+
   background(122, 122, 122);
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
     timer.timerStarted = true;
 
     if (timer.getTime() <= 0) {
       try {
-        
+
         sceneManager.goToScene("spawn");
         timer.setTimer(startTime);
         showTimer = true;
         gameStarted = true;
         lastSpawnTime = millis();
-        
       }
       catch(Exception e) {
         println(e.getMessage());
@@ -154,24 +170,20 @@ void draw()
     }
   }
   if (timer.timerStarted && timer.getTime() > 0) {
-    
-    timer.countDown();
-    
-  }else if(gameStarted && timer.getTime() <= 0){
-    
-    try{
-    
-    sceneManager.goToScene("gameOver");
 
-    tint(255);
-    
-    
-    }catch(Exception e){
-      
-      println(e.getMessage());
-      
+    timer.countDown();
+  } else if (gameStarted && timer.getTime() <= 0) {
+
+    try {
+
+      sceneManager.goToScene("gameOver");
+
+      tint(255);
     }
-    
+    catch(Exception e) {
+
+      println(e.getMessage());
+    }
   }
 
   sceneManager.getCurrentScene().draw(wwidth, wheight);
@@ -189,17 +201,19 @@ void draw()
     text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
   }
   //another way of working with time flow (extracted from apple project)
-  
-   if (millis() - lastSpawnTime > spawnInterval) {
-    
+
+  if (millis() - lastSpawnTime > spawnInterval) {
+
     lastSpawnTime = millis();
-    
-    if(gameStarted) tintImage();
-       
-  } 
-  
-  
-    
+
+    if (gameStarted) tintImage();
+  }
+
+  if (sceneManager.getCurrentScene().getSceneName() == "forest") {
+    safe1.drawNumber();
+    safe2.drawNumber();
+    safe3.drawNumber();
+  }
 }
 
 void mouseMoved() {
@@ -208,19 +222,41 @@ void mouseMoved() {
 
 void mouseClicked() {
   sceneManager.getCurrentScene().mouseClicked();
+  safe1.mouseClicked();
+  safe2.mouseClicked();
+  safe3.mouseClicked();
+
+  if (sceneManager.getCurrentScene().getSceneName() == "forest") {
+    if ((mouseX > width/2 - 150 && mouseX < width/2 + 150) && (mouseY > height/2-150 && mouseY < height/2 - 50)) {
+      String input = safe1.getCurrentNumber() + safe2.getCurrentNumber() + safe3.getCurrentNumber();
+      if (input.equals(code)) {
+        println("You won!");
+        try {
+          sceneManager.goToScene("win scene");
+        }
+        catch(Exception e) {
+          println(e.getMessage());
+        }
+      }
+    }
+  }
+}
+
+void mouseReleased() {
+  safe1.mouseReleased();
+  safe2.mouseReleased();
+  safe3.mouseReleased();
 }
 
 void tintImage() {
-  
+
   tintAmount -= change;
 
-//prevents colour from being glitchy yellow
-      if(tintAmount > 0){
-        
-  tint(tintAmount);
-  
-  //System.out.println(tintAmount);
-  
-      }
-  
+  //prevents colour from being glitchy yellow
+  if (tintAmount > 0) {
+
+    tint(tintAmount);
+
+    //System.out.println(tintAmount);
+  }
 }
