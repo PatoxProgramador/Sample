@@ -1,3 +1,27 @@
+/*Objectives
+**Enough sound to make game scary:
+*- sound for clicking?
+*- sound to inform the time (faster, different background music?)
+*- background music
+**
+** Visuals in what is being clicked (visual feedback maybe (object and the pathways))
+**
+** story (in a form of instructions to help the players know what the hell they are doing)
+** clues?
+**
+** time shown a more interactive way (watching the clock on pulse...)
+**
+** start screen polishment
+** GameOver fix and polishment (tweak with time)
+** introduction polishment
+**
+** quantity and style of puzzle and rooms (target audience? (to define difficulty and complexity))
+** blood?
+**
+** inventory shown?
+** type more requirements if needed here ---> 
+*/
+ 
  import processing.sound.*;
  
 int wwidth = 1920;
@@ -151,16 +175,20 @@ void setup()
   sceneManager.addScene(cards);
   sceneManager.addScene(winScene);
   sceneManager.addScene(gameOver);
+  
 }
 
 void draw()
 {
 
   background(122, 122, 122);
+  
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
+    
     timer.timerStarted = true;
 
     if (timer.getTime() <= 0) {
+      
       try {
 
         sceneManager.goToScene("spawn");
@@ -168,15 +196,19 @@ void draw()
         showTimer = true;
         gameStarted = true;
         lastSpawnTime = millis();
+        
       }
       catch(Exception e) {
+        
         println(e.getMessage());
+        
       }
     }
   }
   if (timer.timerStarted && timer.getTime() > 0) {
 
     timer.countDown();
+    
   } else if (gameStarted && timer.getTime() <= 0) {
 
     try {
@@ -197,13 +229,20 @@ void draw()
   inventoryManager.showInventory();
 
   if (showTimer) {
+    
     if (timer.getTime() > 60) {
+      
       fill(0);
+      
     } else {
+      
       fill(second()%2==0 ? 0 : color(255, 0, 0));
+      
     }
+    
     textSize(24);
     text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
+    
   }
   //another way of working with time flow (extracted from apple project)
 
@@ -212,35 +251,54 @@ void draw()
     lastSpawnTime = millis();
 
     if (gameStarted) tintImage();
+    
   }
 
   if (sceneManager.getCurrentScene().getSceneName() == "forest") {
+    
     safe1.drawNumber();
     safe2.drawNumber();
     safe3.drawNumber();
+    
   }
 }
 
 void mouseMoved() {
+  
   sceneManager.getCurrentScene().mouseMoved();
+  
 }
 
 void mouseClicked() {
+  
   sceneManager.getCurrentScene().mouseClicked();
+  
   safe1.mouseClicked();
   safe2.mouseClicked();
   safe3.mouseClicked();
 
   if (sceneManager.getCurrentScene().getSceneName() == "forest") {
+    
     if ((mouseX > width/2 - 150 && mouseX < width/2 + 150) && (mouseY > height/2-150 && mouseY < height/2 - 50)) {
+      
       String input = safe1.getCurrentNumber() + safe2.getCurrentNumber() + safe3.getCurrentNumber();
+      
       if (input.equals(code)) {
+        
         println("You won!");
+        
+        gameStarted = false;
+        timer.timerStarted = false;
+        
         try {
+          
           sceneManager.goToScene("win scene");
+          
         }
         catch(Exception e) {
+          
           println(e.getMessage());
+          
         }
       }
     }
@@ -248,9 +306,11 @@ void mouseClicked() {
 }
 
 void mouseReleased() {
+  
   safe1.mouseReleased();
   safe2.mouseReleased();
   safe3.mouseReleased();
+  
 }
 
 void tintImage() {
