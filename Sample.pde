@@ -37,6 +37,7 @@ float startTime;
 boolean showTimer = false;
 boolean gameStarted = false;
 //equation of time and tintamount change in colour correlation
+int red;
 int tintAmount;
 int ratio;
 int division;
@@ -44,7 +45,7 @@ int change;
 //counter for tint to work variables
 float lastSpawnTime = 0;
 //SpawnInterval is in milliseconds
-float spawnInterval = 30000;
+float spawnInterval = 10000;
 
 Safe safe1;
 Safe safe2;
@@ -77,8 +78,9 @@ void setup()
 
   lastSpawnTime = 0;
   tintAmount = 255;
-  startTime = 120;
-  division = 5;
+  red = tintAmount;
+  startTime = 60;
+  division = 10;
   ratio = (int)startTime/division;
   change = tintAmount/ratio;
 
@@ -316,11 +318,12 @@ void mouseReleased() {
 void tintImage() {
 
   tintAmount -= change;
+  red -= change*0.4;
 
   //prevents colour from being glitchy yellow
   if (tintAmount > 0) {
 
-    tint(tintAmount);
+    tint(red,tintAmount,tintAmount);
 
     //System.out.println(tintAmount);
   }
