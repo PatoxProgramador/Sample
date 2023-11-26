@@ -19,10 +19,12 @@
 ** blood?
 **
 ** inventory shown?
-** type more requirements if needed here ---> 
+** type more requirements if needed here ---> |
+                                              |
+                                              V
+                                              
 */
- 
- import processing.sound.*;
+import processing.sound.*;
  
 int wwidth = 1920;
 int wheight = 1080;
@@ -39,9 +41,9 @@ boolean gameStarted = false;
 //equation of time and tintamount change in colour correlation
 int red;
 int tintAmount;
-int ratio;
-int division;
-int change;
+float ratio;
+float division;
+float change;
 //counter for tint to work variables
 float lastSpawnTime = 0;
 //SpawnInterval is in milliseconds
@@ -78,10 +80,10 @@ void setup()
 
   lastSpawnTime = 0;
   tintAmount = 255;
-  red = tintAmount;
   startTime = 60;
-  division = 10;
-  ratio = (int)startTime/division;
+  division = spawnInterval/1000;
+  ratio = startTime/division;
+  red = tintAmount;
   change = tintAmount/ratio;
 
   timer = new Timer(1, false);
@@ -319,12 +321,10 @@ void tintImage() {
 
   tintAmount -= change;
   red -= change*0.4;
-
   //prevents colour from being glitchy yellow
   if (tintAmount > 0) {
 
     tint(red,tintAmount,tintAmount);
-
     //System.out.println(tintAmount);
   }
 }
