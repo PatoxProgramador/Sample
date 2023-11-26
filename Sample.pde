@@ -10,7 +10,7 @@
 ** clues?
 **
 ** time shown a more interactive way (watching the clock on pulse...)
-*- clicking somewhere to look at watch, or time stays in a fixed place
+*- clicking somewhere to look at watch/ hover somewheer to look at watch, or time stays in a fixed place
 **
 ** start screen polishment
 ** GameOver fix and polishment (tweak with time)
