@@ -20,9 +20,12 @@
 ** blood?
 **
 ** inventory shown?
+**
+**title of game
+**
+** font of game?
 ** type more requirements if needed here ---> |
-                                              |
-                                              V
+                                              V    
                                               
 */
 import processing.sound.*;
