@@ -278,7 +278,7 @@ void draw()
     
   }
   
-  println("X: " + mouseX + " Y: " + mouseY);
+  //println("X: " + mouseX + " Y: " + mouseY);
   
 }
 
