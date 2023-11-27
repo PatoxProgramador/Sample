@@ -27,9 +27,11 @@ class MoveToSceneObject extends GameObject {
     if(mouseIsHovering) {
       if(moveBack) {
         sceneManager.goToPreviousScene();
+        mouseIsHovering = false;
       } else {
         try {
           sceneManager.goToScene(nextSceneIdentifier);
+          mouseIsHovering = false;
         } catch(Exception e) { 
           println(e.getMessage());
         }

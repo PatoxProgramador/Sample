@@ -52,9 +52,6 @@ class GameObject {
   }
 
   public void mouseClicked() {
-    if(this.identifier == "submit" && mouseIsHovering){
-      
-    }
   }
 
   public String getIdentifier() {

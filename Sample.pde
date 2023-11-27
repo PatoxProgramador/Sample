@@ -64,8 +64,8 @@ SoundFile bMusic;
 
 void settings()
 {
-  fullScreen();
-  //size(wwidth, wheight);
+  //fullScreen();
+  size(wwidth, wheight);
 }
 
 void setup()
@@ -92,14 +92,14 @@ void setup()
 
   timer = new Timer(1, false);
 
-  Collectable apple = new Collectable("apple", "Note.png");
+  //Collectable apple = new Collectable("apple", "note.png");
 
   Scene start = new Scene("start", "start.png");
   Scene gameOver = new Scene("gameOver", "white.png");
 
   MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height/2, 50, 50, "arrowUp.png", "intro");
 
-  startGame.setHoverImage("Blue.png");
+  startGame.setHoverImage("blue.png");
 
   start.addGameObject(startGame);
 
@@ -109,22 +109,22 @@ void setup()
   //---------------------------------------------------
 
   //Creating the scene
-  Scene spawn = new Scene("spawn", "spawn.png");
+  Scene bed = new Scene("bed", "bed.png");
 
   //Move scenes arrows
-  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 1826, 600, 50, 50, "arrowRight.png", "hallway");
-  spawn.addGameObject(toHallway);
+  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 991, 530, 100, 200, "hallway");
+  bed.addGameObject(toHallway);
   
-  MoveToSceneObject toCards = new MoveToSceneObject("goToCards_spawn", 850, 610, 50, 50, "arrowUp.png", "cards");
-  spawn.addGameObject(toCards);
+  //MoveToSceneObject toCards = new MoveToSceneObject("goToCards_spawn", 850, 610, 50, 50, "arrowUp.png", "cards");
+  //bed.addGameObject(toCards);
 
   //Replacement when apple is obtained
-  MoveToSceneObject toForest = new MoveToSceneObject("goToForest_spawn", 500, 590, 50, 50, "arrowUp.png", "forest");
+  //MoveToSceneObject toForest = new MoveToSceneObject("goToForest_spawn", 500, 590, 50, 50, "arrowUp.png", "forest");
 
   //Requires apple puzzle
-  RequireObject requireApple = new RequireObject("requiresApple_spawn", 500, 590, 50, 50, "zoom.png", "You need an Apple before getting here!", apple, toForest);
-  requireApple.setHoverImage("zoomIn.png");
-  spawn.addGameObject(requireApple);
+  //RequireObject requireApple = new RequireObject("requiresApple_spawn", 500, 590, 50, 50, "zoom.png", "You need an Apple before getting here!", apple, toForest);
+  //requireApple.setHoverImage("zoomIn.png");
+  //spawn.addGameObject(requireApple);
 
 
 
@@ -132,36 +132,43 @@ void setup()
 
   Scene hallway = new Scene("hallway", "hallway.png");
   
-  MoveToSceneObject toSpawn = new MoveToSceneObject("goBack_spawn", 900, 1000, 50, 50, "arrowDown.png", true);
-  hallway.addGameObject(toSpawn);
+  MoveToSceneObject toBed = new MoveToSceneObject("goBack_bed", 980, 550, 160, 220, true);
+  hallway.addGameObject(toBed);
   
-  MoveToSceneObject toHouse = new MoveToSceneObject("goToSceneHouse_hallway", 1115, 700, 50, 50, "arrowUp.png", "house");
-  hallway.addGameObject(toHouse);
+  MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneHouse_hallway", 710, 595, 120, 365, "camera");
+  hallway.addGameObject(toCamera);
 
 
   //-------------------------------------------------------
 
 
-  Scene house = new Scene("house", "house.png");
+  Scene camera = new Scene("camera", "camera.png");
   
-  MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_house", 550, 860, 50, 50, "arrowDown.png", true);
-  house.addGameObject(backToHallway);
+  MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_camera", width/2, height-100, 50, 50, "blue.png", true);
+  camera.addGameObject(backToHallway);
   
-  CollectableObject grabApple = new CollectableObject("apple", 930, 550, 200, 170, apple);
-  house.addGameObject(grabApple);
+  MoveToSceneObject toCloseUp = new MoveToSceneObject("goToCloseUp", 830, 550, 500, 500, "close up");
+  camera.addGameObject(toCloseUp);
+  
+  //CollectableObject grabApple = new CollectableObject("apple", 930, 550, 200, 170, apple);
+  //house.addGameObject(grabApple);
 
   //-----------------------------------------------------
 
-  Scene forest = new Scene("forest", "forest.png");
+  //Scene forest = new Scene("forest", "forest.png");
 
   //MoveToSceneObject winObject = new MoveToSceneObject("win object", width/2, height/2, 100, 100, "medal1.png", "win scene");
   //forest.addGameObject(winObject);
 
-  GameObject submitButton = new GameObject("submit", width/2, height/2-100, 300, 100, "submit.png");
-  forest.addGameObject(submitButton);
-
-
-
+  //GameObject submitButton = new GameObject("submit", width/2, height/2-100, 300, 100, "submit.png");
+  //forest.addGameObject(submitButton);
+  
+  Scene closeUp = new Scene("close up", "cameraClose.png");
+  
+  MoveToSceneObject backToCamera = new MoveToSceneObject("toCamera_back", width/2, height-200, 50, 50, "blue.png", true);
+  closeUp.addGameObject(backToCamera);
+  
+  
   //------------------------------------------------------
   Scene winScene = new Scene("win scene", "trophy.png");
 
@@ -176,10 +183,11 @@ void setup()
 
   sceneManager.addScene(start);
   sceneManager.addScene(introduction);
-  sceneManager.addScene(spawn);
+  sceneManager.addScene(bed);
   sceneManager.addScene(hallway);
-  sceneManager.addScene(house);
-  sceneManager.addScene(forest);
+  sceneManager.addScene(camera);
+  sceneManager.addScene(closeUp);
+  //sceneManager.addScene(forest);
   sceneManager.addScene(cards);
   sceneManager.addScene(winScene);
   sceneManager.addScene(gameOver);
@@ -199,7 +207,7 @@ void draw()
       
       try {
 
-        sceneManager.goToScene("spawn");
+        sceneManager.goToScene("bed");
         timer.setTimer(startTime);
         showTimer = true;
         gameStarted = true;
@@ -269,6 +277,9 @@ void draw()
     safe3.drawNumber();
     
   }
+  
+  println("X: " + mouseX + " Y: " + mouseY);
+  
 }
 
 void mouseMoved() {
