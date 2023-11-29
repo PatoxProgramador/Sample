@@ -94,14 +94,18 @@ void setup()
 
   //Collectable apple = new Collectable("apple", "note.png");
 
-  Scene start = new Scene("start", "start.png");
+  Scene start = new Scene("start", "titlescreen.png");
   Scene gameOver = new Scene("gameOver", "white.png");
 
-  MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height/2, 100, 50, "startButtonRed.png", "intro");
+  MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height - 500, 300, 150, "startButton.png", "intro");
+  //DID NOT DO IT CORRECTLY - HELP NEEDED
+  MoveToSceneObject quitGame = new MoveToSceneObject("start", width/2, height - 300, 300, 150, "quitButton.png", "quit");
 
-  startGame.setHoverImage("startButtonBlue.png");
+  startGame.setHoverImage("startButtonHighlight.png");
+  quitGame.setHoverImage("quitButtonHighlighted.png");
 
   start.addGameObject(startGame);
+  start.addGameObject(quitGame);
 
   Scene introduction = new Scene("intro", "white.png");
 
@@ -142,7 +146,7 @@ void setup()
 
   //-----------------------------------------------------
 
-  Scene safe = new Scene("safe", "start.png");
+  Scene safe = new Scene("safe", "safecloseup.png");
 
   MoveToSceneObject backToCurtain = new MoveToSceneObject("goBack_curtain", width/2, height - 100, 50, 50, "blue.png", true);
   safe.addGameObject(backToCurtain);
