@@ -97,9 +97,9 @@ void setup()
   Scene start = new Scene("start", "start.png");
   Scene gameOver = new Scene("gameOver", "white.png");
 
-  MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height/2, 50, 50, "arrowUp.png", "intro");
+  MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height/2, 100, 50, "startButtonRed.png", "intro");
 
-  startGame.setHoverImage("blue.png");
+  startGame.setHoverImage("startButtonBlue.png");
 
   start.addGameObject(startGame);
 
