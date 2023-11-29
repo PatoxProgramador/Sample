@@ -114,7 +114,7 @@ void setup()
   //---------------------------------------------------
 
   //Creating the scene
-  Scene bed = new Scene("bed", "bed.png");
+  Scene bed = new Scene("bed", "scene_1.jpg");
 
   //Move scenes arrows
   MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 991, 530, 100, 200, "hallway");
@@ -137,7 +137,7 @@ void setup()
 
   //----------------------------------------------------
 
-  Scene curtain = new Scene("curtain", "curtain.png");
+  Scene curtain = new Scene("curtain", "scene_2.jpg");
   
   MoveToSceneObject toSafe = new MoveToSceneObject("goToSafe_curtain", 1690, 800, 150, 150, "safe");
   curtain.addGameObject(toSafe);
