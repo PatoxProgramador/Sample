@@ -61,6 +61,7 @@ String code = "one.pngone.pngthree.png";
 //Sound
 SoundFile bMusic;
 
+String a;
 
 void settings()
 {
@@ -214,7 +215,7 @@ void setup()
   sceneManager.addScene(camera);
   sceneManager.addScene(closeUp);
   //sceneManager.addScene(forest);
-  sceneManager.addScene(cards);
+  //sceneManager.addScene(cards);
   sceneManager.addScene(winScene);
   sceneManager.addScene(gameOver);
 }

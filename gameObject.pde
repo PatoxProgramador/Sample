@@ -35,20 +35,31 @@ class GameObject {
 
   public void draw() {
     if (hasImage) {
+      
       if (mouseIsHovering && hasHoverImage) {
+        
         image(gameObjectImageHover, x, y, owidth, oheight);
+        
+         //cursor(HAND);
+         
       } else {
         image(gameObjectImage, x, y, owidth, oheight);
+        
+        //cursor(ARROW);
       }
     }
   }
 
   public void mouseMoved() {
+    
     mouseIsHovering = false;
+    
     if (mouseX >= x - owidth/2 && mouseX <= x + owidth/2 &&
       mouseY >= y - oheight/2 && mouseY <= y + oheight/2) {
       mouseIsHovering = true;
+      
     }
+    
   }
 
   public void mouseClicked() {
