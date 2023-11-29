@@ -1,35 +1,35 @@
 /*Objectives
- **Enough sound to make game scary:
- *- sound for clicking?
- *- sound to inform the time (faster, different background music?)
- *- background music
- **
- ** Visuals in what is being clicked (visual feedback maybe (object and the pathways))
- **
- ** story (in a form of instructions to help the players know what the hell they are doing)
- ** clues?
- **
- ** time shown a more interactive way (watching the clock on pulse...)
- *- clicking somewhere to look at watch/ hover somewheer to look at watch, or time stays in a fixed place
- **
- ** start screen polishment
- ** GameOver fix and polishment (tweak with time)
- ** introduction polishment
- **
- ** quantity and style of puzzle and rooms (target audience? (to define difficulty and complexity))
- ** blood?
- **
- ** inventory shown?
- **
- **title of game
- **
- ** font of game?
- ** type more requirements if needed here ---> |
- V
- 
- */
+**Enough sound to make game scary:
+*- sound for clicking?
+*- sound to inform the time (faster, different background music?)
+*- background music
+**
+** Visuals in what is being clicked (visual feedback maybe (object and the pathways))
+**
+** story (in a form of instructions to help the players know what the hell they are doing)
+** clues?
+**
+** time shown a more interactive way (watching the clock on pulse...)
+*- clicking somewhere to look at watch/ hover somewheer to look at watch, or time stays in a fixed place
+**
+** start screen polishment
+** GameOver fix and polishment (tweak with time)
+** introduction polishment
+**
+** quantity and style of puzzle and rooms (target audience? (to define difficulty and complexity))
+** blood?
+**
+** inventory shown?
+**
+**title of game
+**
+** font of game?
+** type more requirements if needed here ---> |
+                                              V    
+                                              
+*/
 import processing.sound.*;
-
+ 
 int wwidth = 1920;
 int wheight = 1080;
 
@@ -70,9 +70,9 @@ void settings()
 
 void setup()
 {
-
+  
   bMusic = new SoundFile(this, "music.wav");
-
+  
   bMusic.loop();
 
   safe1 = new Safe(width/2 - 100, height/2 - 200, 100);
@@ -97,9 +97,9 @@ void setup()
   Scene start = new Scene("start", "start.png");
   Scene gameOver = new Scene("gameOver", "white.png");
 
-  MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height/2, 100, 50, "startButtonRed.png", "intro");
+  MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height/2, 50, 50, "arrowUp.png", "intro");
 
-  startGame.setHoverImage("startButtonBlue.png");
+  startGame.setHoverImage("blue.png");
 
   start.addGameObject(startGame);
 
@@ -114,11 +114,13 @@ void setup()
   //Move scenes arrows
   MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 991, 530, 100, 200, "hallway");
   bed.addGameObject(toHallway);
-
-  MoveToSceneObject toCurtain = new MoveToSceneObject("goToCurtain_spawn", 300, height/2, 650, height, "curtain");
+  
+  
+  //635, 255
+  
+  MoveToSceneObject toCurtain = new MoveToSceneObject("goToCurtain_spawn", 315, height/2, 315, height/2, "curtain");
   bed.addGameObject(toCurtain);
-
-
+  
   //MoveToSceneObject toCards = new MoveToSceneObject("goToCards_spawn", 850, 610, 50, 50, "arrowUp.png", "cards");
   //bed.addGameObject(toCards);
 
@@ -127,34 +129,26 @@ void setup()
 
   //Requires apple puzzle
   //RequireObject requireApple = new RequireObject("requiresApple_spawn", 500, 590, 50, 50, "zoom.png", "You need an Apple before getting here!", apple, toForest);
-  //requireApple.setHoverImage("zoomIn.png
+  //requireApple.setHoverImage("zoomIn.png");
+  //spawn.addGameObject(requireApple);
 
-
-  //----------------------------------------------------
-
+  //---------------------------------------------------
+  
   Scene curtain = new Scene("curtain", "curtain.png");
   
-  MoveToSceneObject toSafe = new MoveToSceneObject("goToSafe_curtain", 1690, 800, 150, 150, "safe");
-  curtain.addGameObject(toSafe);
-
-  MoveToSceneObject backToBed = new MoveToSceneObject("goBack_bed", width/2, height - 100, 50, 50, "blue.png", true);
+  MoveToSceneObject backToBed = new MoveToSceneObject("goBack_bed", width/2, height-100, 50, 50, "blue.png", true);
   curtain.addGameObject(backToBed);
 
-  //-----------------------------------------------------
 
-  Scene safe = new Scene("safe", "start.png");
-
-  MoveToSceneObject backToCurtain = new MoveToSceneObject("goBack_curtain", width/2, height - 100, 50, 50, "blue.png", true);
-  safe.addGameObject(backToCurtain);
 
 
   //-----------------------------------------------------
 
   Scene hallway = new Scene("hallway", "hallway.png");
-
+  
   MoveToSceneObject toBed = new MoveToSceneObject("goBack_bed", 980, 550, 160, 220, true);
   hallway.addGameObject(toBed);
-
+  
   MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneHouse_hallway", 710, 595, 120, 365, "camera");
   hallway.addGameObject(toCamera);
 
@@ -163,13 +157,13 @@ void setup()
 
 
   Scene camera = new Scene("camera", "camera.png");
-
+  
   MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_camera", width/2, height-100, 50, 50, "blue.png", true);
   camera.addGameObject(backToHallway);
-
+  
   MoveToSceneObject toCloseUp = new MoveToSceneObject("goToCloseUp", 830, 550, 500, 500, "close up");
   camera.addGameObject(toCloseUp);
-
+  
   //CollectableObject grabApple = new CollectableObject("apple", 930, 550, 200, 170, apple);
   //house.addGameObject(grabApple);
 
@@ -182,13 +176,13 @@ void setup()
 
   //GameObject submitButton = new GameObject("submit", width/2, height/2-100, 300, 100, "submit.png");
   //forest.addGameObject(submitButton);
-
+  
   Scene closeUp = new Scene("close up", "cameraClose.png");
-
+  
   MoveToSceneObject backToCamera = new MoveToSceneObject("toCamera_back", width/2, height-200, 50, 50, "blue.png", true);
   closeUp.addGameObject(backToCamera);
-
-
+  
+  
   //------------------------------------------------------
   Scene winScene = new Scene("win scene", "trophy.png");
 
@@ -205,7 +199,6 @@ void setup()
   sceneManager.addScene(introduction);
   sceneManager.addScene(bed);
   sceneManager.addScene(curtain);
-  sceneManager.addScene(safe);
   sceneManager.addScene(hallway);
   sceneManager.addScene(camera);
   sceneManager.addScene(closeUp);
@@ -213,19 +206,20 @@ void setup()
   sceneManager.addScene(cards);
   sceneManager.addScene(winScene);
   sceneManager.addScene(gameOver);
+  
 }
 
 void draw()
 {
 
   background(122, 122, 122);
-
+  
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
-
+    
     timer.timerStarted = true;
 
     if (timer.getTime() <= 0) {
-
+      
       try {
 
         sceneManager.goToScene("bed");
@@ -233,16 +227,19 @@ void draw()
         showTimer = true;
         gameStarted = true;
         lastSpawnTime = millis();
+        
       }
       catch(Exception e) {
-
+        
         println(e.getMessage());
+        
       }
     }
   }
   if (timer.timerStarted && timer.getTime() > 0) {
 
     timer.countDown();
+    
   } else if (gameStarted && timer.getTime() <= 0) {
 
     try {
@@ -263,17 +260,20 @@ void draw()
   inventoryManager.showInventory();
 
   if (showTimer) {
-
+    
     if (timer.getTime() > 60) {
-
+      
       fill(0);
+      
     } else {
-
+      
       fill(second()%2==0 ? 0 : color(255, 0, 0));
+      
     }
-
+    
     textSize(24);
     text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
+    
   }
   //another way of working with time flow (extracted from apple project)
 
@@ -282,56 +282,57 @@ void draw()
     lastSpawnTime = millis();
 
     if (gameStarted) tintImage();
+    
   }
 
-  if (sceneManager.getCurrentScene().getSceneName() == "safe") {
-
+  if (sceneManager.getCurrentScene().getSceneName() == "forest") {
+    
     safe1.drawNumber();
     safe2.drawNumber();
     safe3.drawNumber();
     
-    image(loadImage("submit.png"), width/2, height/2, 300, 300);
   }
-
-  //println("X: " + mouseX + " Y: " + mouseY);
+  
+  println("X: " + mouseX + " Y: " + mouseY);
+  
 }
 
 void mouseMoved() {
-
+  
   sceneManager.getCurrentScene().mouseMoved();
+  
 }
 
 void mouseClicked() {
-
-  sceneManager.getCurrentScene().mouseClicked();
-
-
-  if (sceneManager.getCurrentScene().getSceneName() == "safe") {
-
-    safe1.mouseClicked();
-    safe2.mouseClicked();
-    safe3.mouseClicked();
   
-    
-    
-    if ((mouseX > width/2 - 150 && mouseX < width/2 + 150) && (mouseY > height/2-150 && mouseY < height/2 + 150)) {
+  sceneManager.getCurrentScene().mouseClicked();
+  
+  safe1.mouseClicked();
+  safe2.mouseClicked();
+  safe3.mouseClicked();
 
+  if (sceneManager.getCurrentScene().getSceneName() == "forest") {
+    
+    if ((mouseX > width/2 - 150 && mouseX < width/2 + 150) && (mouseY > height/2-150 && mouseY < height/2 - 50)) {
+      
       String input = safe1.getCurrentNumber() + safe2.getCurrentNumber() + safe3.getCurrentNumber();
-
+      
       if (input.equals(code)) {
-
+        
         println("You won!");
-
+        
         gameStarted = false;
         timer.timerStarted = false;
-
+        
         try {
-
-          sceneManager.goToScene("safe open");
+          
+          sceneManager.goToScene("win scene");
+          
         }
         catch(Exception e) {
-
+          
           println(e.getMessage());
+          
         }
       }
     }
@@ -339,10 +340,11 @@ void mouseClicked() {
 }
 
 void mouseReleased() {
-
+  
   safe1.mouseReleased();
   safe2.mouseReleased();
   safe3.mouseReleased();
+  
 }
 
 void tintImage() {
@@ -352,7 +354,7 @@ void tintImage() {
   //prevents colour from being glitchy yellow
   if (tintAmount > 0) {
 
-    tint(red, tintAmount, tintAmount);
+    tint(red,tintAmount,tintAmount);
     //System.out.println(tintAmount);
   }
 }
