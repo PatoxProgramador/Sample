@@ -72,13 +72,13 @@ void settings()
 void setup()
 {
 
-  bMusic = new SoundFile(this, "music.wav");
+  bMusic = new SoundFile(this, "bMusic.wav");
 
   bMusic.loop();
 
-  safe1 = new Safe(width/2 - 100, height/2 - 200, 100);
-  safe2 = new Safe(width/2, height/2 - 200, 100);
-  safe3 = new Safe(width/2 + 100, height/2 - 200, 100);
+  safe1 = new Safe(width/2 - 150, height/2 - 250, 100);
+  safe2 = new Safe(width/2 - 10, height/2 - 250, 100);
+  safe3 = new Safe(width/2 + 130, height/2 - 250, 100);
 
   //safe.submitCode("one.pngone.pngthree.png");
   //println(safe.code);
@@ -295,7 +295,7 @@ void draw()
     safe2.drawNumber();
     safe3.drawNumber();
     
-    image(loadImage("submit.png"), width/2, height/2, 300, 300);
+    image(loadImage("illegal.png"), width/2 - 40, height/2 + 250, 470, 470);
   }
 
   //println("X: " + mouseX + " Y: " + mouseY);
