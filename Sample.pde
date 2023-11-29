@@ -60,8 +60,9 @@ Safe safe3;
 String code = "one.pngone.pngthree.png";
 //Sound
 SoundFile bMusic;
+SoundFile scream;
 
-String a;
+boolean scared;
 
 void settings()
 {
@@ -72,9 +73,12 @@ void settings()
 void setup()
 {
 
-  bMusic = new SoundFile(this, "bMusic.wav");
+  bMusic = new SoundFile(this, "soundbackground.wav");
+  scream = new SoundFile(this, "scream.wav");
+  
+  scared = false;
 
-  bMusic.loop();
+  //bMusic.loop();
 
   safe1 = new Safe(width/2 - 150, height/2 - 250, 100);
   safe2 = new Safe(width/2 - 10, height/2 - 250, 100);
@@ -85,7 +89,7 @@ void setup()
 
   lastSpawnTime = 0;
   tintAmount = 255;
-  startTime = 60;
+  startTime = 10;
   division = spawnInterval/1000;
   ratio = startTime/division;
   red = tintAmount;
@@ -253,6 +257,15 @@ void draw()
     try {
 
       sceneManager.goToScene("gameOver");
+      
+      bMusic.stop();
+      
+      if(!scared){
+      scream.play();
+      
+      scared = true;
+      
+      }
 
       tint(255);
     }
