@@ -32,7 +32,7 @@ class InventoryManager {
     int i = 1;
     for(Collectable col : collectables){
       PImage img = loadImage(col.gameObjectImageFile);
-      image(img, i * 50, height-50, 75, 75);
+      image(img, i * 100, height-100, 125, 125);
       i++;
     }
   }

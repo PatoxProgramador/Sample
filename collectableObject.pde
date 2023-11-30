@@ -27,7 +27,7 @@ class CollectableObject extends GameObject {
   
   @Override
   public void mouseClicked() {
-    if(mouseIsHovering) {
+    if(mouseIsHovering && !inventoryManager.containsCollectable(collectable)) {
       inventoryManager.addCollectable(collectable);
       sceneManager.getCurrentScene().removeGameObject(this);
       if(willReplaceByAnotherGameObject) {

@@ -34,6 +34,16 @@ class MoveToSceneObject extends GameObject {
         
       }
       
+      if(this.getIdentifier().equals("goToFish_curtain") && inventoryManager.containsCollectable(syringe)){
+        try {
+          sceneManager.goToScene(nextSceneIdentifier);
+          mouseIsHovering = false;
+          return;
+        } catch(Exception e) { 
+          println(e.getMessage());
+        }
+      }
+      
       if(moveBack) {
         sceneManager.goToPreviousScene();
         mouseIsHovering = false;

@@ -29,4 +29,8 @@ class Collectable {
     final int prime = 13;
     return prime * this.name.hashCode();
   }
+  
+  void setImage(String image){
+   gameObjectImageFile = image; 
+  }
 }
