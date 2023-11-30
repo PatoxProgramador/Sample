@@ -61,6 +61,7 @@ boolean scenePlaying = false;
 
 float startScene;
 boolean itemScene = false;
+boolean doesntmatter;
 
 Collectable fishKey;
 
@@ -72,6 +73,7 @@ void settings()
 
 void setup()
 {
+  doesntmatter = false;
 
   fishKey = new Collectable("safe key", "fishkey.png");
 
@@ -85,9 +87,6 @@ void setup()
   safe1 = new Safe(width/2 - 150, height/2 - 250, 100);
   safe2 = new Safe(width/2 - 10, height/2 - 250, 100);
   safe3 = new Safe(width/2 + 130, height/2 - 250, 100);
-
-  //safe.submitCode("one.pngone.pngthree.png");
-  //println(safe.code);
 
   lastSpawnTime = 0;
   tintAmount = 255;
@@ -289,6 +288,14 @@ void draw()
     itemScene = false;
     sceneManager.goToPreviousScene();
     inventoryManager.addCollectable(fishKey);
+  }
+  
+  if (sceneManager.getCurrentScene().getSceneName() == "bed" && !doesntmatter) {
+
+    bMusic.play();
+    
+    doesntmatter = true;
+    
   }
 
   //println("X: " + mouseX + " Y: " + mouseY);
