@@ -18,8 +18,9 @@ class Switch {
   boolean toggle1;
   boolean toggle2;
   boolean toggle3;
+  SoundFile sound;
 
-  Switch(int pX, int pY, int pSizeX, int pSizeY, Light l1, Light l2, Light l3, boolean t1, boolean t2, boolean t3, String activeIMG, String inactiveIMG) {
+  Switch(int pX, int pY, int pSizeX, int pSizeY, Light l1, Light l2, Light l3, boolean t1, boolean t2, boolean t3, String activeIMG, String inactiveIMG, SoundFile a) {
     x = pX;
     y = pY;
     sizeX = pSizeX;
@@ -33,6 +34,8 @@ class Switch {
     light2 = l2;
     light3 = l3;
     
+    sound = a;
+    
     active = loadImage(activeIMG);
     inactive = loadImage(inactiveIMG);
   }
@@ -44,6 +47,7 @@ class Switch {
 
   void mouseClicked() {
     if (dist(mouseX, mouseY, x, y) < sizeY) {
+      sound.play();
       switchActive = !switchActive;
       if (toggle1) {
         light1.toggle();

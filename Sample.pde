@@ -69,6 +69,12 @@ String code = "one.pngone.pngthree.png";
 //Sound
 SoundFile bMusic;
 SoundFile scream;
+SoundFile lobby;
+SoundFile safeOpen;
+SoundFile switching;
+SoundFile fishy;
+SoundFile collect;
+SoundFile bang;
 
 boolean scared;
 
@@ -99,14 +105,16 @@ void setup()
 
   doorKey = new Collectable("door key", "doorkeyinventory.png");
   doorKeyObject = new CollectableObject("door key object", width/2, height/2, 50, 50, doorKey);
+  
+  switching = new SoundFile(this, "switch.wav");
 
   l1 = new Light(635, 400, 50, "light_on.png", "light_off.png");
   l2 = new Light(935, 400, 50, "light_on.png", "light_off.png");
   l3 = new Light(1235, 400, 50, "light_on.png", "light_off.png");
 
-  s1 = new Switch(635, 550, 150, 200, l1, l2, l3, true, true, false, "switch_on.png", "switch_off.png");
-  s2 = new Switch(935, 550, 150, 200, l1, l2, l3, false, true, true, "switch_on.png", "switch_off.png");
-  s3 = new Switch(1235, 550, 150, 200, l1, l2, l3, false, true, false, "switch_on.png", "switch_off.png");
+  s1 = new Switch(635, 550, 150, 200, l1, l2, l3, true, true, false, "switch_on.png", "switch_off.png",switching);
+  s2 = new Switch(935, 550, 150, 200, l1, l2, l3, false, true, true, "switch_on.png", "switch_off.png",switching);
+  s3 = new Switch(1235, 550, 150, 200, l1, l2, l3, false, true, false, "switch_on.png", "switch_off.png",switching);
 
   doesntmatter = false;
 
@@ -114,10 +122,15 @@ void setup()
 
   bMusic = new SoundFile(this, "soundbackground.wav");
   scream = new SoundFile(this, "scream.wav");
+  lobby = new SoundFile(this, "Menu.wav");
+  safeOpen = new SoundFile(this, "vault.wav");
+  fishy = new SoundFile(this, "fish.wav");
+  collect = new SoundFile(this, "collecting.wav");
+  bang = new SoundFile(this, "lockDoor.wav");
 
   scared = false;
 
-  //bMusic.loop();
+  lobby.loop();
 
   safe1 = new Safe(width/2 - 150, height/2 - 250, 100);
   safe2 = new Safe(width/2 - 10, height/2 - 250, 100);
@@ -158,9 +171,9 @@ void setup()
 
   //Move scenes arrows
 
-  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 990, 535, 250, 500, "hallway");
+  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn_door", 990, 535, 250, 500, "hallway");
 
-  RequireObject needKey = new RequireObject("needDoorKey", 990, 535, 250, 500, "transparent.png", doorKey, toHallway);
+  RequireObject needKey = new RequireObject("needDoorKey", 990, 535, 250, 500, "transparent.png", doorKey, toHallway, bang);
   bed.addGameObject(needKey);
 
 
@@ -209,9 +222,9 @@ void setup()
 
   hallway = new Scene("hallway", "hallway.jpg");
 
-  toBed = new MoveToSceneObject("goBack_bed", 980, 550, 160, 220, true);
+  toBed = new MoveToSceneObject("goBack_bed_door", 980, 550, 160, 220, true);
 
-  MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneHouse_hallway", 710, 595, 120, 365, "camera");
+  MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneHouse_hallway_door", 710, 595, 120, 365, "camera");
   hallway.addGameObject(toCamera);
 
 
@@ -220,26 +233,14 @@ void setup()
 
   Scene camera = new Scene("camera", "surveillance.png");
 
-  MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_camera", width/2, height-100, 50, 50, "blue.png", true);
+  MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_camera_door", width/2, height-100, 50, 50, "blue.png", true);
   camera.addGameObject(backToHallway);
-
-  MoveToSceneObject toCloseUp = new MoveToSceneObject("goToCloseUp", 830, 550, 500, 500, "close up");
-  camera.addGameObject(toCloseUp);
 
   MoveToSceneObject toSwitchPuzzle = new MoveToSceneObject("goToSwitchPuzzle", 100, height/2, 250, 250, "switch");
   camera.addGameObject(toSwitchPuzzle);
   //----------------------------------------------------
 
   Scene switchPuzzle = new Scene("switch", "switch_pannel.png");
-
-
-  //-----------------------------------------------------
-
-  Scene closeUp = new Scene("close up", "cameraClose.png");
-
-  MoveToSceneObject backToCamera = new MoveToSceneObject("toCamera_back", width/2, height-200, 50, 50, "blue.png", true);
-  closeUp.addGameObject(backToCamera);
-
 
   //------------------------------------------------------
   Scene winScene = new Scene("win scene", "trophy.png");
@@ -303,6 +304,7 @@ void draw()
 
       if (!scared) {
         scream.play();
+        lobby.loop();
 
         scared = true;
       }
@@ -363,17 +365,23 @@ void draw()
     itemScene = false;
     sceneManager.goToPreviousScene();
     inventoryManager.addCollectable(fishKey);
+    collect.play();
+    
   }
   
   if(keyScene && (millis() - keyStarted > 2500)){
     keyScene = false;
     sceneManager.goToPreviousScene();
     inventoryManager.addCollectable(doorKey);
+    collect.play();
+    
   }
 
   if (sceneManager.getCurrentScene().getSceneName() == "bed" && !doesntmatter) {
 
     bMusic.play();
+    
+    lobby.stop();
 
     doesntmatter = true;
   }
@@ -418,8 +426,11 @@ void mouseClicked() {
       if (input.equals(code)) {
         itemScene = true;
         startScene = millis();
+        
+        safeOpen.play();
 
         fish.changeImage("cabinet_open.png");
+        
         fish.addGameObject(doorKeyObject);
       }
     }
@@ -428,14 +439,15 @@ void mouseClicked() {
   if (sceneManager.getCurrentScene().getSceneName() == "fish" && canClick) {
     keyScene = true;
     keyStarted = millis();
+    
+    fishy.play();
+    
   }
 
   if (sceneManager.getCurrentScene().getSceneName() == "switch" && canClick) {
     s1.mouseClicked();
     s2.mouseClicked();
     s3.mouseClicked();
-
-
 
     canClick = false;
   }

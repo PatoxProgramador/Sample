@@ -25,6 +25,15 @@ class MoveToSceneObject extends GameObject {
   @Override
   public void mouseClicked() {
     if(mouseIsHovering) {
+      
+      if(getIdentifier().contains("door")){
+        
+        SoundFile opening = new SoundFile(Sample.this,"door.wav");
+        
+        opening.play();
+        
+      }
+      
       if(moveBack) {
         sceneManager.goToPreviousScene();
         mouseIsHovering = false;
