@@ -40,6 +40,10 @@ class Scene {
     }
   }
   
+  public void changeImage(String input){
+    backgroundImage = loadImage(input);
+  }
+  
   public void draw(int wwidth, int wheight) {
     imageMode(CENTER);
     image(backgroundImage, width/2, height/2, wwidth, wheight);

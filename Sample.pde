@@ -33,6 +33,7 @@ Switch s1;
 Switch s2;
 Switch s3;
 
+String cabinetString = "interactables.png";
 
 int wwidth = 1920;
 int wheight = 1080;
@@ -79,6 +80,11 @@ boolean doesntmatter;
 
 Collectable fishKey;
 
+Scene fish;
+
+CollectableObject doorKeyObject;
+Collectable doorKey;
+
 void settings()
 {
   //fullScreen();
@@ -88,6 +94,9 @@ void settings()
 void setup()
 {
 
+  doorKey = new Collectable("door key", "key.png");
+  doorKeyObject = new CollectableObject("door key object", width/2, height/2, 50, 50, doorKey);
+  
   l1 = new Light(635, 400, 50, "light_on.png", "light_off.png");
   l2 = new Light(935, 400, 50, "light_on.png", "light_off.png");
   l3 = new Light(1235, 400, 50, "light_on.png", "light_off.png");
@@ -143,14 +152,27 @@ void setup()
   Scene bed = new Scene("bed", "bed.jpg");
 
 
-  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 991, 530, 100, 200, "hallway");
 
   //Move scenes arrows
-  RequireObject needKey = new RequireObject("goToHallway_spawn", 991, 530, 100, 200, "transparent.png", fishKey, toHallway);
+
+  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 990, 535, 250, 500, "hallway");
+  
+  RequireObject needKey = new RequireObject("needDoorKey", 990, 535, 250, 500, "transparent.png", doorKey, toHallway);
   bed.addGameObject(needKey);
+  
 
   MoveToSceneObject toCurtain = new MoveToSceneObject("goToCurtain_spawn", 300, height/2, 650, height, "curtain");
   bed.addGameObject(toCurtain);
+
+  MoveToSceneObject toBoard = new MoveToSceneObject("goToBoard_spawn", 1550, 360, 300, 300, "board");
+  bed.addGameObject(toBoard);
+
+  //---------------------------------------------------
+
+  Scene board = new Scene("board", "board.png");
+
+  MoveToSceneObject backToBed_board = new MoveToSceneObject("backToBed_board", width/2, height - 100, 50, 50, "blue.png", true);
+  board.addGameObject(backToBed_board);
 
 
   //----------------------------------------------------
@@ -163,19 +185,29 @@ void setup()
   MoveToSceneObject backToBed = new MoveToSceneObject("goBack_bed", width/2, height - 100, 50, 50, "blue.png", true);
   curtain.addGameObject(backToBed);
 
+  MoveToSceneObject toFish = new MoveToSceneObject("goToFish_curtain", 1240, 440, 300, 350, "fish");
+  curtain.addGameObject(toFish);
+
+  //----------------------------------------------------
+
+  fish = new Scene("fish", cabinetString);
+
+  MoveToSceneObject backToCurtain = new MoveToSceneObject("goBack_bed", width/2, height - 100, 50, 50, "blue.png", true);
+  fish.addGameObject(backToCurtain);
+
   //-----------------------------------------------------
 
   Scene safe = new Scene("safe", "safecloseup.png");
 
-  MoveToSceneObject backToCurtain = new MoveToSceneObject("goBack_curtain", width/2, height - 100, 50, 50, "blue.png", true);
-  safe.addGameObject(backToCurtain);
+  MoveToSceneObject backToCurtain_fish = new MoveToSceneObject("goBack_curtain", width/2, height - 100, 50, 50, "blue.png", true);
+  safe.addGameObject(backToCurtain_fish);
 
   //-----------------------------------------------------
 
   hallway = new Scene("hallway", "hallway.jpg");
 
   toBed = new MoveToSceneObject("goBack_bed", 980, 550, 160, 220, true);
-  
+
   MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneHouse_hallway", 710, 595, 120, 365, "camera");
   hallway.addGameObject(toCamera);
 
@@ -216,7 +248,9 @@ void setup()
   sceneManager.addScene(introduction);
   sceneManager.addScene(bed);
   sceneManager.addScene(curtain);
+  sceneManager.addScene(board);
   sceneManager.addScene(safe);
+  sceneManager.addScene(fish);
   sceneManager.addScene(hallway);
   sceneManager.addScene(camera);
   sceneManager.addScene(switchPuzzle);
@@ -227,7 +261,11 @@ void setup()
 void draw()
 {
 
+
+
   background(122, 122, 122);
+  
+
 
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
 
@@ -331,6 +369,8 @@ void draw()
     switchPuzzle();
   }
 
+
+
   println("X: " + mouseX + " Y: " + mouseY);
 }
 
@@ -340,6 +380,12 @@ void mouseMoved() {
 }
 
 void mouseClicked() {
+  
+  if (sceneManager.getCurrentScene().getSceneName() == "curtain") {
+      if (inventoryManager.containsCollectable(fishKey)) {
+        inventoryManager.removeCollectable(fishKey);
+      }
+    }
 
   sceneManager.getCurrentScene().mouseClicked();
 
@@ -359,6 +405,9 @@ void mouseClicked() {
       if (input.equals(code)) {
         itemScene = true;
         startScene = millis();
+
+        fish.changeImage("cabinet_open.png");
+        fish.addGameObject(doorKeyObject);
       }
     }
   }
@@ -367,6 +416,8 @@ void mouseClicked() {
     s1.mouseClicked();
     s2.mouseClicked();
     s3.mouseClicked();
+
+    
 
     canClick = false;
   }
