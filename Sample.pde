@@ -22,6 +22,9 @@
  
  */
 import processing.sound.*;
+import processing.video.*;
+
+Movie introduction;
 
 boolean canClick = true;
 
@@ -119,6 +122,8 @@ void settings()
 void setup()
 {
 
+  introduction = new Movie(this, "trailer.mp4");
+
   doorKey = new Collectable("door key", "doorkeyinventory.png");
 
   filledSyringe = new Collectable("filled syringe", "filledsyringeinventory.png");
@@ -184,10 +189,6 @@ void setup()
   //Creating the scene
   Scene bed = new Scene("bed", "bed.jpg");
 
-
-
-  //Move scenes arrows
-
   MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn_door", 990, 535, 250, 500, "hallway");
 
   RequireObject needKey = new RequireObject("needDoorKey", 990, 535, 250, 500, "transparent.png", doorKey, toHallway, bang);
@@ -218,7 +219,7 @@ void setup()
   MoveToSceneObject backToBed = new MoveToSceneObject("goBack_bed", width/2, height - 100, 50, 50, "go_back.png", true);
   curtain.addGameObject(backToBed);
 
-  MoveToSceneObject toFish = new MoveToSceneObject("goToFish_curtain", 1240, 440, 300, 300, "fish");
+  MoveToSceneObject toFish = new MoveToSceneObject("goToFish_curtain", 1240, 425, 270, 300, "fish");
   curtain.addGameObject(toFish);
 
   syringe = new Collectable("syringe", "transparent.png");
@@ -254,18 +255,12 @@ void setup()
   hallway.addGameObject(toBeast);
 
 
-
-
   //-------------------------------------------------------
 
   Scene beast = new Scene("beast", "beast.png");
 
-
   MoveToSceneObject backToHallway_beast = new MoveToSceneObject("goBackHallway_beast", width/2, height - 100, 50, 50, "go_back.png", true);
   beast.addGameObject(backToHallway_beast);
-
-
-
 
   //--------------------------------------------------------
 
@@ -283,6 +278,7 @@ void setup()
   Scene switchPuzzle = new Scene("switch", "switch_pannel.png");
 
   //------------------------------------------------------
+
   Scene winScene = new Scene("win scene", "final_scene.jpg");
 
   //--------------------------------------------------------
@@ -312,26 +308,7 @@ void draw()
 
 
 
-  if (sceneManager.getCurrentScene().getSceneName() == "intro") {
-
-    timer.timerStarted = true;
-
-    if (timer.getTime() <= 0) {
-
-      try {
-
-        sceneManager.goToScene("bed");
-        timer.setTimer(startTime);
-        showTimer = true;
-        gameStarted = true;
-        lastSpawnTime = millis();
-      }
-      catch(Exception e) {
-
-        println(e.getMessage());
-      }
-    }
-  }
+  
   if (timer.timerStarted && timer.getTime() > 0) {
 
     timer.countDown();
@@ -455,6 +432,30 @@ void draw()
   }
 
   println("X: " + mouseX + " Y: " + mouseY);
+  
+  if (sceneManager.getCurrentScene().getSceneName() == "intro") {
+
+    timer.timerStarted = true;
+    //introduction.play();
+    //imageMode(CORNER);
+    //image(introduction, 0, 0);
+
+    if (timer.getTime() <= 0) {
+
+      try {
+
+        sceneManager.goToScene("bed");
+        timer.setTimer(startTime);
+        showTimer = true;
+        gameStarted = true;
+        lastSpawnTime = millis();
+      }
+      catch(Exception e) {
+
+        println(e.getMessage());
+      }
+    }
+  }
 }
 
 void mouseMoved() {
@@ -594,4 +595,8 @@ void switchPuzzle() {
   }
 
   image(loadImage("go_back.png"), width/2, height-100, 50, 50);
+}
+
+void movieEvent(Movie introduction) {
+  introduction.read();
 }
