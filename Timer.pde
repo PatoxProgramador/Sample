@@ -28,5 +28,9 @@ class Timer {
     time -= 1/frameRate;
   }
   
+  void reset(){
+    time = 0;
+  }
+  
   
 }

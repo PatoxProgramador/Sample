@@ -6,7 +6,7 @@ class TextObject extends GameObject {
   
   public TextObject(String identifier, int x, int y, int owidth, 
                     int oheight, String gameObjectImageFile, String text) {
-    super(identifier, x, y, owidth, oheight, gameObjectImageFile);
+    super(identifier, x, y, owidth, oheight, gameObjectImageFile, false, "");
     this.text = text;
     displayText = false;
     calculateTextArea(); //Automatically calculates the area 

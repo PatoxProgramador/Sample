@@ -9,12 +9,18 @@ class GameObject {
   private PImage gameObjectImage;
   private PImage gameObjectImageHover;
   protected boolean mouseIsHovering;
+  private String text;
+  boolean hasDialogue;
 
-  public GameObject(String identifier, int x, int y, int owidth, int oheight) {
-    this(identifier, x, y, owidth, oheight, "");
+  public GameObject(String identifier, int x, int y, int owidth, int oheight){
+    this(identifier, x, y, owidth, oheight, "", false, "");
   }
 
-  public GameObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile) {
+  public GameObject(String identifier, int x, int y, int owidth, int oheight, boolean hasDialogue, String dialogue) {
+    this(identifier, x, y, owidth, oheight, "", hasDialogue, dialogue);
+  }
+
+  public GameObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, boolean hasDialogue, String dialogue) {
     this.identifier = identifier;
     this.x = x;
     this.y = y;
@@ -26,6 +32,8 @@ class GameObject {
     }
     hasHoverImage = false;
     mouseIsHovering = false;
+    this.hasDialogue = hasDialogue;
+    text = dialogue;
   }
 
   public void setHoverImage(String gameObjectImageHoverFile) {
@@ -38,6 +46,8 @@ class GameObject {
       
       if (mouseIsHovering && hasHoverImage) {
         
+        
+        
         image(gameObjectImageHover, x, y, owidth, oheight);
         
          //cursor(HAND);
@@ -49,8 +59,7 @@ class GameObject {
       }
     }
     
-    if(mouseIsHovering) cursor(HAND);
-    else cursor(ARROW);
+    if(hasDialogue && mouseIsHovering && sceneManager.getCurrentScene().getSceneName() != "intro" && sceneManager.getCurrentScene().sceneName != "start") new Dialogue(text).draw();
     
   }
 

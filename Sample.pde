@@ -47,8 +47,13 @@ int wheight = 1080;
 
 final SceneManager sceneManager = new SceneManager();
 final InventoryManager inventoryManager = new InventoryManager();
+
 //timer
 Timer timer;
+
+Timer textTimer;
+
+Dialogue dia;
 
 float startTime;
 
@@ -122,7 +127,9 @@ void settings()
 void setup()
 {
 
-  introduction = new Movie(this, "trailer.mp4");
+  dia = new Dialogue();
+
+  introduction = new Movie(this, "cutscene.mp4");
 
   doorKey = new Collectable("door key", "doorkeyinventory.png");
 
@@ -168,12 +175,14 @@ void setup()
 
   timer = new Timer(1, false);
 
+  textTimer = new Timer(0, false);
+
   Scene start = new Scene("start", "titlescreen.png");
   Scene gameOver = new Scene("gameOver", "white.png");
 
-  MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height - 500, 300, 150, "startButton.png", "intro");
+  MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height - 500, 300, 150, "startButton.png", "intro", false, "");
   //DID NOT DO IT CORRECTLY - HELP NEEDED
-  MoveToSceneObject quitGame = new MoveToSceneObject("start", width/2, height - 300, 300, 150, "quitButton.png", "quit");
+  MoveToSceneObject quitGame = new MoveToSceneObject("start", width/2, height - 300, 300, 150, "quitButton.png", "quit", false, "");
 
   startGame.setHoverImage("startButtonHighlight.png");
   quitGame.setHoverImage("quitButtonHighlighted.png");
@@ -189,16 +198,16 @@ void setup()
   //Creating the scene
   Scene bed = new Scene("bed", "bed.jpg");
 
-  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn_door", 990, 535, 250, 500, "hallway");
+  MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn_door", 990, 535, 250, 500, "hallway", true, "Where does this lead?");
 
-  RequireObject needKey = new RequireObject("needDoorKey", 990, 535, 250, 500, "transparent.png", doorKey, toHallway, bang);
+  RequireObject needKey = new RequireObject("needDoorKey", 990, 535, 250, 500, "transparent.png", doorKey, toHallway, bang, true, "aaaaaaaah");
   bed.addGameObject(needKey);
 
 
-  MoveToSceneObject toCurtain = new MoveToSceneObject("goToCurtain_spawn", 300, height/2, 650, height, "curtain");
+  MoveToSceneObject toCurtain = new MoveToSceneObject("goToCurtain_spawn", 300, height/2, 650, height, "curtain", true, "What could be behind this?");
   bed.addGameObject(toCurtain);
 
-  MoveToSceneObject toBoard = new MoveToSceneObject("goToBoard_spawn", 1550, 360, 300, 300, "board");
+  MoveToSceneObject toBoard = new MoveToSceneObject("goToBoard_spawn", 1550, 360, 300, 300, "board", true,  "Needs text");
   bed.addGameObject(toBoard);
 
   //---------------------------------------------------
@@ -213,17 +222,17 @@ void setup()
 
   Scene curtain = new Scene("curtain", "curtain.jpg");
 
-  MoveToSceneObject toSafe = new MoveToSceneObject("goToSafe_curtain", 1690, 800, 150, 150, "safe");
+  MoveToSceneObject toSafe = new MoveToSceneObject("goToSafe_curtain", 1690, 800, 150, 150, "safe", true, "Whats in this?");
   curtain.addGameObject(toSafe);
 
   MoveToSceneObject backToBed = new MoveToSceneObject("goBack_bed", width/2, height - 100, 50, 50, "go_back.png", true);
   curtain.addGameObject(backToBed);
 
-  MoveToSceneObject toFish = new MoveToSceneObject("goToFish_curtain", 1240, 425, 270, 300, "fish");
+  MoveToSceneObject toFish = new MoveToSceneObject("goToFish_curtain", 1240, 425, 270, 300, "fish", true,  "Whats in the cabinet?");
   curtain.addGameObject(toFish);
 
   syringe = new Collectable("syringe", "transparent.png");
-  CollectableObject syringeObject = new CollectableObject("syringe object", 1384, 626, 75, 75, syringe);
+  CollectableObject syringeObject = new CollectableObject("syringe object", 1384, 626, 75, 75, syringe, true, "This could be useful later");
 
   curtain.addGameObject(syringeObject);
 
@@ -248,10 +257,10 @@ void setup()
   MoveToSceneObject backToBed_hallway = new MoveToSceneObject("goBack_camera_door", width/2, height-100, 50, 50, "go_back.png", true);
   hallway.addGameObject(backToBed_hallway);
 
-  MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneCamera_hallway_door", 710, 595, 120, 365, "camera");
+  MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneCamera_hallway_door", 710, 595, 120, 365, "camera", true, "What's in this room?");
   hallway.addGameObject(toCamera);
 
-  MoveToSceneObject toBeast = new MoveToSceneObject("goToSceneBeast_hallway_door", 487, 612, 200, 500, "beast");
+  MoveToSceneObject toBeast = new MoveToSceneObject("goToSceneBeast_hallway_door", 487, 612, 200, 500, "beast", true, "I heard some strange noises in there");
   hallway.addGameObject(toBeast);
 
 
@@ -270,7 +279,7 @@ void setup()
   MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_camera_door", width/2, height-100, 50, 50, "go_back.png", true);
   camera.addGameObject(backToHallway);
 
-  MoveToSceneObject toSwitchPuzzle = new MoveToSceneObject("goToSwitchPuzzle", 100, height/2, 250, 250, "switch");
+  MoveToSceneObject toSwitchPuzzle = new MoveToSceneObject("goToSwitchPuzzle", 100, height/2, 250, 250, "switch", true, "What do these levers do?");
   camera.addGameObject(toSwitchPuzzle);
 
   //----------------------------------------------------
@@ -308,7 +317,7 @@ void draw()
 
 
 
-  
+
   if (timer.timerStarted && timer.getTime() > 0) {
 
     timer.countDown();
@@ -431,14 +440,17 @@ void draw()
     syringe.setImage("syringe_empty.png");
   }
 
-  println("X: " + mouseX + " Y: " + mouseY);
-  
+  //println("X: " + mouseX + " Y: " + mouseY);
+
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
 
     timer.timerStarted = true;
+    //timer.setTimer(11);
     //introduction.play();
     //imageMode(CORNER);
     //image(introduction, 0, 0);
+
+    lobby.stop();
 
     if (timer.getTime() <= 0) {
 
@@ -449,6 +461,8 @@ void draw()
         showTimer = true;
         gameStarted = true;
         lastSpawnTime = millis();
+
+        
       }
       catch(Exception e) {
 
@@ -456,6 +470,33 @@ void draw()
       }
     }
   }
+  
+  if(sceneManager.getCurrentScene().getSceneName() == "bed" && timer.getTime() <= 97 && !textTimer.timerStarted){
+    textTimer.timerStarted = true;
+    textTimer.setTimer(7);
+  }
+
+  //if (sceneManager.getCurrentScene().getSceneName() != "start" && sceneManager.getCurrentScene().getSceneName() != "intro") {
+  //  textTimer.countDown();
+    
+  //  if (textTimer.getTime() > 0) {
+      
+  //    dia.draw();
+      
+  //    if (textTimer.getTime() > 3.5) {
+        
+  //      dia.setIndex(0);
+        
+  //    } else {
+        
+  //      dia.setIndex(1);
+  //    }
+  //  }
+  //}
+
+  
+
+  
 }
 
 void mouseMoved() {
@@ -522,7 +563,7 @@ void mouseClicked() {
 
         fish.changeImage("cabinet_open.png");
 
-        doorKeyObject = new CollectableObject("door key object", 750, 816, 75, 75, doorKey);
+        doorKeyObject = new CollectableObject("door key object", 750, 816, 75, 75, doorKey, true, "Maybe this could be my escape");
 
         fish.addGameObject(doorKeyObject);
       }

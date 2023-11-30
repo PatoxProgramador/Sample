@@ -4,13 +4,13 @@ class CollectableObject extends GameObject {
   private boolean willReplaceByAnotherGameObject;
   
   public CollectableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, Collectable collectable) {
-    this(identifier, x, y, owidth, oheight, collectable, null);
+                           int oheight, Collectable collectable, boolean hasDialogue, String dialogue) {
+    this(identifier, x, y, owidth, oheight, collectable, null, hasDialogue, dialogue);
   }
   
   public CollectableObject(String identifier, int x, int y, int owidth, 
-                           int oheight, Collectable collectable, GameObject replaceWith) {
-    super(identifier, x, y, owidth, oheight, collectable.getGameObjectImageFile());
+                           int oheight, Collectable collectable, GameObject replaceWith, boolean hasDialogue, String dialogue) {
+    super(identifier, x, y, owidth, oheight, collectable.getGameObjectImageFile(), hasDialogue, dialogue);
     this.collectable = collectable;
     if(replaceWith != null) {
       this.replaceWith = replaceWith;

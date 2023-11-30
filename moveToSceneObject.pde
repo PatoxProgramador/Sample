@@ -2,25 +2,33 @@ class MoveToSceneObject extends GameObject {
   
   private String nextSceneIdentifier;
   private boolean moveBack;
+  int em;
   
   public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, boolean moveBack) {
     this(identifier, x, y, owidth, oheight, "", moveBack);
   }
   
   public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, boolean moveBack) {
-    super(identifier, x, y, owidth, oheight, gameObjectImageFile);
+    super(identifier, x, y, owidth, oheight, gameObjectImageFile, false, "");
     this.moveBack = moveBack;
   }
   
   public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String nextSceneIdentifier) {
-    this(identifier, x, y, owidth, oheight, "", nextSceneIdentifier);
+    this(identifier, x, y, owidth, oheight, "", nextSceneIdentifier, false, "");
   }
   
-  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, String nextSceneIdentifier) {
-    super(identifier, x, y, owidth, oheight, gameObjectImageFile);
+  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, String nextSceneIdentifier, boolean hasDialogue, String dialogue) {
+    super(identifier, x, y, owidth, oheight, gameObjectImageFile, hasDialogue, dialogue);
     this.nextSceneIdentifier = nextSceneIdentifier;
     this.moveBack = false;
   }
+  
+  public MoveToSceneObject(String identifier, int x, int y, int owidth, int oheight, String nextSceneIdentifier, boolean hasDialogue, String dialogue) {
+    super(identifier, x, y, owidth, oheight, "", hasDialogue, dialogue);
+    this.nextSceneIdentifier = nextSceneIdentifier;
+    this.moveBack = false;
+  }
+  
   
   @Override
   public void mouseClicked() {

@@ -4,9 +4,9 @@ class RequireObject extends GameObject {
   
   SoundFile file;
   
-  public RequireObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, Collectable collectable, GameObject replaceWith, SoundFile sound) {
+  public RequireObject(String identifier, int x, int y, int owidth, int oheight, String gameObjectImageFile, Collectable collectable, GameObject replaceWith, SoundFile sound, boolean hasDialogue, String dialogue) {
     
-    super(identifier, x, y, owidth, oheight, gameObjectImageFile);
+    super(identifier, x, y, owidth, oheight, gameObjectImageFile, hasDialogue, dialogue);
     this.collectable = collectable;
     this.replaceWith = replaceWith;
     
