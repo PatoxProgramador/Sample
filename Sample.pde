@@ -87,6 +87,9 @@ SoundFile switching;
 SoundFile fishy;
 SoundFile collect;
 SoundFile bang;
+SoundFile ending;
+SoundFile injection;
+SoundFile breaking;
 
 boolean scared;
 
@@ -156,6 +159,9 @@ void setup()
   fishy = new SoundFile(this, "fish.wav");
   collect = new SoundFile(this, "collecting.wav");
   bang = new SoundFile(this, "lockDoor.wav");
+  ending = new SoundFile(this, "ending.wav");
+  injection = new SoundFile(this, "injection.wav");
+  breaking = new SoundFile(this, "breaking.wav");
 
   scared = false;
 
@@ -178,7 +184,7 @@ void setup()
   textTimer = new Timer(0, false);
 
   Scene start = new Scene("start", "titlescreen.png");
-  Scene gameOver = new Scene("gameOver", "white.png");
+  Scene gameOver = new Scene("gameOver", "doctor_face.jpg");
 
   MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height - 500, 300, 150, "startButton.png", "intro", false, "");
   //DID NOT DO IT CORRECTLY - HELP NEEDED
@@ -266,7 +272,7 @@ void setup()
 
   //-------------------------------------------------------
 
-  Scene beast = new Scene("beast", "beast.png");
+  Scene beast = new Scene("beast", "scene_5.png");
 
   MoveToSceneObject backToHallway_beast = new MoveToSceneObject("goBackHallway_beast", width/2, height - 100, 50, 50, "go_back.png", true);
   beast.addGameObject(backToHallway_beast);
@@ -311,14 +317,9 @@ void setup()
 void draw()
 {
 
-
-
   background(122, 122, 122);
 
-
-
-
-  if (timer.timerStarted && timer.getTime() > 0) {
+  if (timer.timerStarted && timer.getTime() > 0 && sceneManager.getCurrentScene().getSceneName() != "win scene") {
 
     timer.countDown();
   } else if (gameStarted && timer.getTime() <= 0) {
@@ -511,6 +512,10 @@ void mouseClicked() {
   if (sceneManager.getCurrentScene().getSceneName() == "hallway" && dist(mouseX, mouseY, 975, 545) < 400 && canEscape) {
     try {
       sceneManager.goToScene("win scene");
+      
+      ending.loop();
+      bMusic.stop();
+      
     }
     catch(Exception e) {
       println(e.getMessage());
@@ -535,6 +540,9 @@ void mouseClicked() {
     if (dist(mouseX, mouseY, 867, 584) < 400) {
       if (inventoryManager.containsCollectable(filledSyringe)) {
         inventoryManager.removeCollectable(filledSyringe);
+        
+        injection.play();
+        
         switchPuzzleEnabled = true;
       }
     }
@@ -631,7 +639,8 @@ void switchPuzzle() {
   if (l1.lightActive && l2.lightActive && l3.lightActive) {
     sceneManager.goToPreviousScene();
     hallway.changeImage("hallway_broken.png");
-    bang.play();
+    breaking.play();
+    
     canEscape = true;
   }
 
