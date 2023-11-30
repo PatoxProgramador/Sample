@@ -25,6 +25,10 @@ import processing.sound.*;
 
 boolean canClick = true;
 
+boolean canEscape = false;
+
+boolean switchPuzzleEnabled = false;
+
 Light l1;
 Light l2;
 Light l3;
@@ -95,11 +99,16 @@ Collectable doorKey;
 
 Collectable syringe;
 
+Collectable filledSyringe;
+
 boolean keyScene = false;
 float keyStarted;
 
 boolean syringeScene = false;
 float syringeStarted;
+
+boolean syringeFill = false;
+float fillStarted;
 
 void settings()
 {
@@ -112,6 +121,7 @@ void setup()
 
   doorKey = new Collectable("door key", "doorkeyinventory.png");
 
+  filledSyringe = new Collectable("filled syringe", "filledsyringeinventory.png");
 
   switching = new SoundFile(this, "switch.wav");
 
@@ -234,13 +244,30 @@ void setup()
 
   hallway = new Scene("hallway", "hallway.jpg");
 
-  toBed = new MoveToSceneObject("goBack_bed_door", 980, 550, 160, 220, true);
+  MoveToSceneObject backToBed_hallway = new MoveToSceneObject("goBack_camera_door", width/2, height-100, 50, 50, "go_back.png", true);
+  hallway.addGameObject(backToBed_hallway);
 
-  MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneHouse_hallway_door", 710, 595, 120, 365, "camera");
+  MoveToSceneObject toCamera = new MoveToSceneObject("goToSceneCamera_hallway_door", 710, 595, 120, 365, "camera");
   hallway.addGameObject(toCamera);
+
+  MoveToSceneObject toBeast = new MoveToSceneObject("goToSceneBeast_hallway_door", 487, 612, 200, 500, "beast");
+  hallway.addGameObject(toBeast);
+
+
 
 
   //-------------------------------------------------------
+
+  Scene beast = new Scene("beast", "beast.png");
+
+
+  MoveToSceneObject backToHallway_beast = new MoveToSceneObject("goBackHallway_beast", width/2, height - 100, 50, 50, "go_back.png", true);
+  beast.addGameObject(backToHallway_beast);
+
+
+
+
+  //--------------------------------------------------------
 
 
   Scene camera = new Scene("camera", "surveillance.png");
@@ -250,12 +277,13 @@ void setup()
 
   MoveToSceneObject toSwitchPuzzle = new MoveToSceneObject("goToSwitchPuzzle", 100, height/2, 250, 250, "switch");
   camera.addGameObject(toSwitchPuzzle);
+
   //----------------------------------------------------
 
   Scene switchPuzzle = new Scene("switch", "switch_pannel.png");
 
   //------------------------------------------------------
-  Scene winScene = new Scene("win scene", "trophy.png");
+  Scene winScene = new Scene("win scene", "final_scene.jpg");
 
   //--------------------------------------------------------
 
@@ -268,6 +296,7 @@ void setup()
   sceneManager.addScene(safe);
   sceneManager.addScene(fish);
   sceneManager.addScene(hallway);
+  sceneManager.addScene(beast);
   sceneManager.addScene(camera);
   sceneManager.addScene(switchPuzzle);
   sceneManager.addScene(winScene);
@@ -377,6 +406,16 @@ void draw()
     image(loadImage("syringe_empty_scene.png"), width/2, height/2, 1920, 1080);
   }
 
+  if (syringeFill) {
+    image(loadImage("filledsyringe.png"), width/2, height/2, 1920, 1080);
+  }
+
+  if (syringeFill && millis() - fillStarted > 2500) {
+    syringeFill = false;
+    collect.play();
+    inventoryManager.addCollectable(filledSyringe);
+  }
+
   if (itemScene && (millis() - startScene > 2500)) {
     itemScene = false;
     sceneManager.goToPreviousScene();
@@ -427,9 +466,35 @@ void mouseClicked() {
 
   canClick = false;
 
+  if (sceneManager.getCurrentScene().getSceneName() == "hallway" && dist(mouseX, mouseY, 975, 545) < 400 && canEscape) {
+    try {
+      sceneManager.goToScene("win scene");
+    }
+    catch(Exception e) {
+      println(e.getMessage());
+    }
+  }
+
   if (sceneManager.getCurrentScene().getSceneName() == "curtain" && dist(1240, 440, mouseX, mouseY) < 300) {
     if (inventoryManager.containsCollectable(fishKey)) {
       inventoryManager.removeCollectable(fishKey);
+    }
+  }
+
+  if (sceneManager.getCurrentScene().getSceneName() == "camera") {
+    if (dist(mouseX, mouseY, 1410, 750) < 300 && inventoryManager.containsCollectable(syringe)) {
+      inventoryManager.removeCollectable(syringe);
+      syringeFill = true;
+      fillStarted = millis();
+    }
+  }
+
+  if (sceneManager.getCurrentScene().getSceneName() == "beast") {
+    if (dist(mouseX, mouseY, 867, 584) < 400) {
+      if (inventoryManager.containsCollectable(filledSyringe)) {
+        inventoryManager.removeCollectable(filledSyringe);
+        switchPuzzleEnabled = true;
+      }
     }
   }
 
@@ -480,10 +545,14 @@ void mouseClicked() {
   }
 
 
-  if (sceneManager.getCurrentScene().getSceneName() == "switch" && canClick) {
+  if (sceneManager.getCurrentScene().getSceneName() == "switch") {
     s1.mouseClicked();
     s2.mouseClicked();
     s3.mouseClicked();
+
+    if (dist(mouseX, mouseY, width/2, height-100) < 50) {
+      sceneManager.goToPreviousScene();
+    }
   }
 }
 
@@ -519,6 +588,10 @@ void switchPuzzle() {
 
   if (l1.lightActive && l2.lightActive && l3.lightActive) {
     sceneManager.goToPreviousScene();
-    hallway.addGameObject(toBed);
+    hallway.changeImage("hallway_broken.png");
+    bang.play();
+    canEscape = true;
   }
+
+  image(loadImage("go_back.png"), width/2, height-100, 50, 50);
 }

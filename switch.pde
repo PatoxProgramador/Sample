@@ -46,7 +46,7 @@ class Switch {
   }
 
   void mouseClicked() {
-    if (dist(mouseX, mouseY, x, y) < sizeY) {
+    if (dist(mouseX, mouseY, x, y) < sizeY && switchPuzzleEnabled) {
       sound.play();
       switchActive = !switchActive;
       if (toggle1) {
