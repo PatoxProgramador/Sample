@@ -85,6 +85,9 @@ Scene fish;
 CollectableObject doorKeyObject;
 Collectable doorKey;
 
+boolean keyScene = false;
+float keyStarted;
+
 void settings()
 {
   //fullScreen();
@@ -94,9 +97,9 @@ void settings()
 void setup()
 {
 
-  doorKey = new Collectable("door key", "key.png");
+  doorKey = new Collectable("door key", "doorkeyinventory.png");
   doorKeyObject = new CollectableObject("door key object", width/2, height/2, 50, 50, doorKey);
-  
+
   l1 = new Light(635, 400, 50, "light_on.png", "light_off.png");
   l2 = new Light(935, 400, 50, "light_on.png", "light_off.png");
   l3 = new Light(1235, 400, 50, "light_on.png", "light_off.png");
@@ -107,7 +110,7 @@ void setup()
 
   doesntmatter = false;
 
-  fishKey = new Collectable("safe key", "fishkey.png");
+  fishKey = new Collectable("safe key", "fishkeyinventory.png");
 
   bMusic = new SoundFile(this, "soundbackground.wav");
   scream = new SoundFile(this, "scream.wav");
@@ -156,10 +159,10 @@ void setup()
   //Move scenes arrows
 
   MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 990, 535, 250, 500, "hallway");
-  
+
   RequireObject needKey = new RequireObject("needDoorKey", 990, 535, 250, 500, "transparent.png", doorKey, toHallway);
   bed.addGameObject(needKey);
-  
+
 
   MoveToSceneObject toCurtain = new MoveToSceneObject("goToCurtain_spawn", 300, height/2, 650, height, "curtain");
   bed.addGameObject(toCurtain);
@@ -264,7 +267,7 @@ void draw()
 
 
   background(122, 122, 122);
-  
+
 
 
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
@@ -348,14 +351,24 @@ void draw()
     image(loadImage("illegal.png"), width/2 - 40, height/2 + 250, 470, 470);
   }
 
+  if (keyScene) {
+    image(loadImage("key.png"), width/2, height/2, 1920, 1080);
+  }
+
   if (itemScene) {
-    image(loadImage("key_in_the_safe.png"), width/2, height/2, 1920, 1080);
+    image(loadImage("fishkey.png"), width/2, height/2, 1920, 1080);
   }
 
   if (itemScene && (millis() - startScene > 2500)) {
     itemScene = false;
     sceneManager.goToPreviousScene();
     inventoryManager.addCollectable(fishKey);
+  }
+  
+  if(keyScene && (millis() - keyStarted > 2500)){
+    keyScene = false;
+    sceneManager.goToPreviousScene();
+    inventoryManager.addCollectable(doorKey);
   }
 
   if (sceneManager.getCurrentScene().getSceneName() == "bed" && !doesntmatter) {
@@ -380,12 +393,12 @@ void mouseMoved() {
 }
 
 void mouseClicked() {
-  
+
   if (sceneManager.getCurrentScene().getSceneName() == "curtain") {
-      if (inventoryManager.containsCollectable(fishKey)) {
-        inventoryManager.removeCollectable(fishKey);
-      }
+    if (inventoryManager.containsCollectable(fishKey)) {
+      inventoryManager.removeCollectable(fishKey);
     }
+  }
 
   sceneManager.getCurrentScene().mouseClicked();
 
@@ -412,12 +425,17 @@ void mouseClicked() {
     }
   }
 
+  if (sceneManager.getCurrentScene().getSceneName() == "fish" && canClick) {
+    keyScene = true;
+    keyStarted = millis();
+  }
+
   if (sceneManager.getCurrentScene().getSceneName() == "switch" && canClick) {
     s1.mouseClicked();
     s2.mouseClicked();
     s3.mouseClicked();
 
-    
+
 
     canClick = false;
   }
