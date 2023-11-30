@@ -29,12 +29,6 @@ class Safe {
     size = pSize;
   }
 
-  //void submitCode(String input) {
-  //  if (code.equals(input)) {
-  //    println("cool");
-  //  }
-  //}
-
   public void mouseClicked() {
     if(mouseButton == LEFT && canClick) {
       canClick = false;

@@ -99,11 +99,13 @@ void setup()
 
   timer = new Timer(1, false);
 
+  //Collectable apple = new Collectable("apple", "note.png");
+
   Scene start = new Scene("start", "titlescreen.png");
   Scene gameOver = new Scene("gameOver", "white.png");
 
   MoveToSceneObject startGame = new MoveToSceneObject("start", width/2, height - 500, 300, 150, "startButton.png", "intro");
-  //DID NOT DO IT CORRECTLY - HELP NEEDED
+  //DID NOT DO IT CORRECTLY - HELP NEEDED - work in progress
   MoveToSceneObject quitGame = new MoveToSceneObject("start", width/2, height - 300, 300, 150, "quitButton.png", "quit");
 
   startGame.setHoverImage("startButtonHighlight.png");
@@ -114,7 +116,6 @@ void setup()
 
   Scene introduction = new Scene("intro", "white.png");
 
-
   //---------------------------------------------------
 
   //Creating the scene
@@ -122,14 +123,24 @@ void setup()
 
 
   MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 991, 530, 100, 200, "hallway");
+  bed.addGameObject(toHallway);
   
   //Move scenes arrows
-  RequireObject needKey = new RequireObject("goToHallway_spawn", 991, 530, 100, 200, "transparent.png", fishKey, toHallway);
-  bed.addGameObject(needKey);
+  //RequireObject needKey = new RequireObject("goToHallway_spawn", 991, 530, 100, 200, "", "", fishKey, toHallway);
+  //bed.addGameObject(needKey);
 
   MoveToSceneObject toCurtain = new MoveToSceneObject("goToCurtain_spawn", 300, height/2, 650, height, "curtain");
   bed.addGameObject(toCurtain);
 
+  //MoveToSceneObject toCards = new MoveToSceneObject("goToCards_spawn", 850, 610, 50, 50, "arrowUp.png", "cards");
+  //bed.addGameObject(toCards);
+
+  //Replacement when apple is obtained
+  //MoveToSceneObject toForest = new MoveToSceneObject("goToForest_spawn", 500, 590, 50, 50, "arrowUp.png", "forest");
+
+  //Requires apple puzzle
+  //RequireObject requireApple = new RequireObject("requiresApple_spawn", 500, 590, 50, 50, "zoom.png", "You need an Apple before getting here!", apple, toForest);
+  //requireApple.setHoverImage("zoomIn.png
 
   //----------------------------------------------------
 
@@ -147,6 +158,11 @@ void setup()
 
   MoveToSceneObject backToCurtain = new MoveToSceneObject("goBack_curtain", width/2, height - 100, 50, 50, "blue.png", true);
   safe.addGameObject(backToCurtain);
+
+  //-----------------------------------------------------
+
+
+
 
   //-----------------------------------------------------
 
@@ -170,7 +186,18 @@ void setup()
   MoveToSceneObject toCloseUp = new MoveToSceneObject("goToCloseUp", 830, 550, 500, 500, "close up");
   camera.addGameObject(toCloseUp);
 
+  //CollectableObject grabApple = new CollectableObject("apple", 930, 550, 200, 170, apple);
+  //house.addGameObject(grabApple);
+
   //-----------------------------------------------------
+
+  //Scene forest = new Scene("forest", "forest.png");
+
+  //MoveToSceneObject winObject = new MoveToSceneObject("win object", width/2, height/2, 100, 100, "medal1.png", "win scene");
+  //forest.addGameObject(winObject);
+
+  //GameObject submitButton = new GameObject("submit", width/2, height/2-100, 300, 100, "submit.png");
+  //forest.addGameObject(submitButton);
 
   Scene closeUp = new Scene("close up", "cameraClose.png");
 
@@ -180,7 +207,13 @@ void setup()
 
   //------------------------------------------------------
   Scene winScene = new Scene("win scene", "trophy.png");
-  
+
+  //-----------------------------------------------------
+
+  //Scene cards = new Scene("cards", "cards.png");
+  //MoveToSceneObject backToSpawn = new MoveToSceneObject("goBack_spawn", 1100, 1000, 50, 50, "arrowDown.png", true);
+  //cards.addGameObject(backToSpawn);
+
   //--------------------------------------------------------
 
 
@@ -191,6 +224,9 @@ void setup()
   sceneManager.addScene(safe);
   sceneManager.addScene(hallway);
   sceneManager.addScene(camera);
+  sceneManager.addScene(closeUp);
+  //sceneManager.addScene(forest);
+  //sceneManager.addScene(cards);
   sceneManager.addScene(winScene);
   sceneManager.addScene(gameOver);
 }
@@ -278,7 +314,7 @@ void draw()
     safe2.drawNumber();
     safe3.drawNumber();
 
-    image(loadImage("illegal.png"), width/2 - 40, height/2 + 250, 470, 470);
+    //image(loadImage("illegal.png"), width/2 - 40, height/2 + 250, 470, 470);
   }
 
   if (itemScene) {
@@ -290,6 +326,9 @@ void draw()
     sceneManager.goToPreviousScene();
     inventoryManager.addCollectable(fishKey);
   }
+
+
+
 
   //println("X: " + mouseX + " Y: " + mouseY);
 }
@@ -319,6 +358,7 @@ void mouseClicked() {
       if (input.equals(code)) {
         itemScene = true;
         startScene = millis();
+        
       }
     }
   }
@@ -329,6 +369,7 @@ void mouseReleased() {
   safe1.mouseReleased();
   safe2.mouseReleased();
   safe3.mouseReleased();
+  
 }
 
 void tintImage() {
