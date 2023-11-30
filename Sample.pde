@@ -124,11 +124,11 @@ void setup()
 
 
   MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 991, 530, 100, 200, "hallway");
-  bed.addGameObject(toHallway);
+  //bed.addGameObject(toHallway);
   
   //Move scenes arrows
-  //RequireObject needKey = new RequireObject("goToHallway_spawn", 991, 530, 100, 200, "", "", fishKey, toHallway);
-  //bed.addGameObject(needKey);
+  RequireObject needKey = new RequireObject("goToHallway_spawn", 991, 530, 100, 200, "transparent.png", fishKey, toHallway);
+  bed.addGameObject(needKey);
 
 
 

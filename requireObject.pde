@@ -1,11 +1,11 @@
-class RequireObject extends TextObject {
+class RequireObject extends GameObject {
   private Collectable collectable;
   private GameObject replaceWith;
   
   public RequireObject(String identifier, int x, int y, int owidth, int oheight, 
-                       String gameObjectImageFile, String text, 
+                       String gameObjectImageFile, 
                        Collectable collectable, GameObject replaceWith) {
-    super(identifier, x, y, owidth, oheight, gameObjectImageFile, text);
+    super(identifier, x, y, owidth, oheight, gameObjectImageFile);
     this.collectable = collectable;
     this.replaceWith = replaceWith;
   }
