@@ -152,7 +152,7 @@ void setup()
 
   //-----------------------------------------------------
 
-  Scene hallway = new Scene("hallway", "hallway.png");
+  Scene hallway = new Scene("hallway", "scene_3.jpg");
 
   MoveToSceneObject toBed = new MoveToSceneObject("goBack_bed", 980, 550, 160, 220, true);
   hallway.addGameObject(toBed);
