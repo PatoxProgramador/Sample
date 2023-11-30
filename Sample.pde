@@ -44,7 +44,7 @@ float change;
 //counter for tint to work variables
 float lastSpawnTime = 0;
 //SpawnInterval is in milliseconds
-float spawnInterval = 10000;
+float spawnInterval = 20000;
 
 Safe safe1;
 Safe safe2;
