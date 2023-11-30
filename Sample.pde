@@ -1,8 +1,6 @@
 /*Objectives
  **Enough sound to make game scary:
  *- sound for clicking?
- *- sound to inform the time (faster, different background music?)
- *- background music
  **
  ** Visuals in what is being clicked (visual feedback maybe (object and the pathways))
  **
@@ -16,14 +14,8 @@
  ** GameOver fix and polishment (tweak with time)
  ** introduction polishment
  **
- ** quantity and style of puzzle and rooms (target audience? (to define difficulty and complexity))
- ** blood?
- **
  ** inventory shown?
  **
- **title of game
- **
- ** font of game?
  ** type more requirements if needed here ---> |
  V
  
@@ -78,7 +70,7 @@ void setup()
   
   scared = false;
 
-  //bMusic.loop();
+  bMusic.loop();
 
   safe1 = new Safe(width/2 - 150, height/2 - 250, 100);
   safe2 = new Safe(width/2 - 10, height/2 - 250, 100);
@@ -89,7 +81,7 @@ void setup()
 
   lastSpawnTime = 0;
   tintAmount = 255;
-  startTime = 10;
+  startTime = 100;
   division = spawnInterval/1000;
   ratio = startTime/division;
   red = tintAmount;
@@ -171,7 +163,7 @@ void setup()
   //-------------------------------------------------------
 
 
-  Scene camera = new Scene("camera", "camera.png");
+  Scene camera = new Scene("camera", "screens.png");
 
   MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_camera", width/2, height-100, 50, 50, "blue.png", true);
   camera.addGameObject(backToHallway);
