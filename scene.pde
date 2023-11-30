@@ -6,6 +6,9 @@ class Scene {
   private ArrayList<GameObject> recentlyAddedGameObjects;
   private ArrayList<GameObject> markedForDeathGameObjects;
   
+  boolean cutsceneStarted = false;
+  float startTime;
+  
   public Scene(String sceneName, String backgroundImageFile) {
     this.sceneName = sceneName;
     this.backgroundImage = loadImage(backgroundImageFile);
@@ -42,7 +45,7 @@ class Scene {
     image(backgroundImage, width/2, height/2, wwidth, wheight);
     for(GameObject object : gameObjects) {
       object.draw();
-    }
+    }    
   }
   
   public void mouseMoved() {

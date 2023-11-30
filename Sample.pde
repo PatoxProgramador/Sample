@@ -17,7 +17,7 @@
  ** inventory shown?
  **
  ** type more requirements if needed here ---> |
-                                               V
+ V
  cursor, music
  
  */
@@ -57,6 +57,13 @@ SoundFile scream;
 
 boolean scared;
 
+boolean scenePlaying = false;
+
+float startScene;
+boolean itemScene = false;
+
+Collectable fishKey;
+
 void settings()
 {
   //fullScreen();
@@ -66,9 +73,11 @@ void settings()
 void setup()
 {
 
+  fishKey = new Collectable("safe key", "fishkey.png");
+
   bMusic = new SoundFile(this, "soundbackground.wav");
   scream = new SoundFile(this, "scream.wav");
-  
+
   scared = false;
 
   bMusic.loop();
@@ -111,11 +120,17 @@ void setup()
   //---------------------------------------------------
 
   //Creating the scene
-  Scene bed = new Scene("bed", "scene_1.jpg");
+  Scene bed = new Scene("bed", "bed.jpg");
 
-  //Move scenes arrows
+
   MoveToSceneObject toHallway = new MoveToSceneObject("goToHallway_spawn", 991, 530, 100, 200, "hallway");
   bed.addGameObject(toHallway);
+  
+  //Move scenes arrows
+  //RequireObject needKey = new RequireObject("goToHallway_spawn", 991, 530, 100, 200, "", "", fishKey, toHallway);
+  //bed.addGameObject(needKey);
+
+
 
   MoveToSceneObject toCurtain = new MoveToSceneObject("goToCurtain_spawn", 300, height/2, 650, height, "curtain");
   bed.addGameObject(toCurtain);
@@ -134,8 +149,8 @@ void setup()
 
   //----------------------------------------------------
 
-  Scene curtain = new Scene("curtain", "scene_2.jpg");
-  
+  Scene curtain = new Scene("curtain", "curtain.jpg");
+
   MoveToSceneObject toSafe = new MoveToSceneObject("goToSafe_curtain", 1690, 800, 150, 150, "safe");
   curtain.addGameObject(toSafe);
 
@@ -149,10 +164,14 @@ void setup()
   MoveToSceneObject backToCurtain = new MoveToSceneObject("goBack_curtain", width/2, height - 100, 50, 50, "blue.png", true);
   safe.addGameObject(backToCurtain);
 
+  //-----------------------------------------------------
+
+
+
 
   //-----------------------------------------------------
 
-  Scene hallway = new Scene("hallway", "scene_3.jpg");
+  Scene hallway = new Scene("hallway", "hallway.jpg");
 
   MoveToSceneObject toBed = new MoveToSceneObject("goBack_bed", 980, 550, 160, 220, true);
   hallway.addGameObject(toBed);
@@ -164,7 +183,7 @@ void setup()
   //-------------------------------------------------------
 
 
-  Scene camera = new Scene("camera", "screens.png");
+  Scene camera = new Scene("camera", "surveillance.png");
 
   MoveToSceneObject backToHallway = new MoveToSceneObject("goBack_camera", width/2, height-100, 50, 50, "blue.png", true);
   camera.addGameObject(backToHallway);
@@ -250,14 +269,13 @@ void draw()
     try {
 
       sceneManager.goToScene("gameOver");
-      
+
       bMusic.stop();
-      
-      if(!scared){
-      scream.play();
-      
-      scared = true;
-      
+
+      if (!scared) {
+        scream.play();
+
+        scared = true;
       }
 
       tint(255);
@@ -300,9 +318,22 @@ void draw()
     safe1.drawNumber();
     safe2.drawNumber();
     safe3.drawNumber();
-    
+
     image(loadImage("illegal.png"), width/2 - 40, height/2 + 250, 470, 470);
   }
+
+  if (itemScene) {
+    image(loadImage("key_in_the_safe.png"), width/2, height/2, 1920, 1080);
+  }
+
+  if (itemScene && (millis() - startScene > 2500)) {
+    itemScene = false;
+    sceneManager.goToPreviousScene();
+    inventoryManager.addCollectable(fishKey);
+  }
+
+
+
 
   //println("X: " + mouseX + " Y: " + mouseY);
 }
@@ -322,28 +353,16 @@ void mouseClicked() {
     safe1.mouseClicked();
     safe2.mouseClicked();
     safe3.mouseClicked();
-  
-    
-    
-    if ((mouseX > width/2 - 150 && mouseX < width/2 + 150) && (mouseY > height/2-150 && mouseY < height/2 + 150)) {
+
+
+
+    if ((mouseX > width/2 - 100 && mouseX < width/2 + 100) && (mouseY > 760 - 100 && mouseY < 760 + 100)) {
 
       String input = safe1.getCurrentNumber() + safe2.getCurrentNumber() + safe3.getCurrentNumber();
 
       if (input.equals(code)) {
-
-        println("You won!");
-
-        gameStarted = false;
-        timer.timerStarted = false;
-
-        try {
-
-          sceneManager.goToScene("safe open");
-        }
-        catch(Exception e) {
-
-          println(e.getMessage());
-        }
+        itemScene = true;
+        startScene = millis();
       }
     }
   }
