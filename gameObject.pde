@@ -48,6 +48,10 @@ class GameObject {
         //cursor(ARROW);
       }
     }
+    
+    if(mouseIsHovering) cursor(HAND);
+    else cursor(ARROW);
+    
   }
 
   public void mouseMoved() {

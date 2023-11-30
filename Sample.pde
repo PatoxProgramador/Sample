@@ -33,7 +33,7 @@ Switch s1;
 Switch s2;
 Switch s3;
 
-String cabinetString = "interactables.png";
+String cabinetString = "cabinet_closed.png";
 
 int wwidth = 1920;
 int wheight = 1080;
