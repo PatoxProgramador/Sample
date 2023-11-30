@@ -17,7 +17,8 @@
  ** inventory shown?
  **
  ** type more requirements if needed here ---> |
- V
+                                               V
+ cursor, music
  
  */
 import processing.sound.*;
