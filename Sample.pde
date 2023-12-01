@@ -440,10 +440,10 @@ void draw()
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
 
     timer.timerStarted = true;
-    //timer.setTimer(11);
-    //introduction.play();
-    //imageMode(CORNER);
-    //image(introduction, 0, 0);
+    timer.setTimer(11);
+    introduction.play();
+    imageMode(CORNER);
+    image(introduction, 0, 0);
 
     lobby.stop();
 
@@ -485,7 +485,7 @@ void draw()
   if (sceneManager.getCurrentScene().getSceneName() == "camera") {
     if (dist(mouseX, mouseY, 1410, 750) < 300) {
       if (hasSeenBeast) new Dialogue("Maybe this is what that beast wants?").draw();
-      else new Dialogue("What is this stuff").draw();
+      else new Dialogue("What is this stuff?!").draw();
     }
   }
 
@@ -499,21 +499,7 @@ void draw()
 
       sceneManager.goToScene("puddle scene");
       
-      pushMatrix();
-  
-      translate(width/2,height - 100);
-  
-      fill(0);
- 
-      rect(0,0,400,75);
-  
-     fill(255);
-     
-     textAlign(LEFT,CENTER);
-     
-     text("WTF HAPPENED TO ME", 10,0,400,75);
-  
-     popMatrix();
+      new Dialogue("WHAT HAPPENED TO ME?!").draw();
       
       if(bomb){
         
