@@ -32,6 +32,9 @@ class Dialogue {
 
   void draw() {
       pushMatrix();
+      PFont font;
+      font = createFont("font.otf", 42);
+      textFont(font);
       fill(0);
       translate(x, y);
       rectMode(CENTER);

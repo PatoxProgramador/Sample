@@ -24,6 +24,9 @@
 import processing.sound.*;
 import processing.video.*;
 
+float winStarted;
+boolean won = false;
+
 Movie introduction;
 
 boolean canClick = true;
@@ -298,8 +301,10 @@ void setup()
 
   Scene winScene = new Scene("win scene", "final_scene.jpg");
 
+  Scene puddleScene = new Scene("puddle scene", "puddle.png");
+
   //--------------------------------------------------------
-  
+
   Scene quitScene = new Scene("quit", "transparent.png");
 
 
@@ -317,14 +322,15 @@ void setup()
   sceneManager.addScene(winScene);
   sceneManager.addScene(gameOver);
   sceneManager.addScene(quitScene);
+  sceneManager.addScene(puddleScene);
 }
 
 void draw()
 {
-  
+
   background(122, 122, 122);
-  
-  if(sceneManager.getCurrentScene().getSceneName() == "quit") exit();
+
+  if (sceneManager.getCurrentScene().getSceneName() == "quit") exit();
 
   if (timer.timerStarted && timer.getTime() > 0 && sceneManager.getCurrentScene().getSceneName() != "win scene") {
 
@@ -432,7 +438,7 @@ void draw()
 
   if (sceneManager.getCurrentScene().getSceneName() == "bed" && !doesntmatter) {
 
-    bMusic.play();
+    bMusic.loop();
 
     lobby.stop();
 
@@ -489,21 +495,34 @@ void draw()
   }
 
   if (sceneManager.getCurrentScene().getSceneName() == "beast" ) {
-    if(!hasSeenBeast) hasSeenBeast = true;
+    if (!hasSeenBeast) hasSeenBeast = true;
     if (dist(mouseX, mouseY, 867, 584) < 400) {
       new Dialogue("\"Inject.... Inject.....\"").draw();
     }
   }
-  
-  if(sceneManager.getCurrentScene().getSceneName() == "camera"){
-    if (dist(mouseX, mouseY, 1410, 750) < 300){
-      if(hasSeenBeast) new Dialogue("Maybe this is what that beast wants?").draw();
+
+  if (sceneManager.getCurrentScene().getSceneName() == "camera") {
+    if (dist(mouseX, mouseY, 1410, 750) < 300) {
+      if (hasSeenBeast) new Dialogue("Maybe this is what that beast wants?").draw();
       else new Dialogue("What is this stuff").draw();
     }
   }
-    
-  
- 
+
+  if (sceneManager.getCurrentScene().getSceneName() == "win scene" && !won) {
+    winStarted = millis();
+    won = true;
+  }
+
+  if (millis() - winStarted > 7000 && won) {
+    try {
+
+      sceneManager.goToScene("puddle scene");
+    }
+    catch(Exception e) {
+
+      println(e.getMessage());
+    }
+  }
 }
 
 void mouseMoved() {
@@ -552,6 +571,8 @@ void mouseClicked() {
       }
     }
   }
+
+
 
   sceneManager.getCurrentScene().mouseClicked();
 
