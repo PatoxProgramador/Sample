@@ -1,8 +1,10 @@
-import processing.sound.*;
+import processing.sound.*; //<>//
 import processing.video.*;
 
 float winStarted;
 boolean won = false;
+
+boolean timerStarted = false;
 
 Movie introduction;
 
@@ -36,6 +38,7 @@ Timer textTimer;
 Dialogue dia;
 
 float startTime;
+float startTimer;
 
 boolean showTimer = false;
 boolean gameStarted = false;
@@ -165,7 +168,7 @@ void setup()
   red = tintAmount;
   change = tintAmount/ratio;
 
-  timer = new Timer(1, false);
+  timer = new Timer(11, false);
 
   textTimer = new Timer(0, false);
 
@@ -435,19 +438,24 @@ void draw()
     syringe.setImage("syringe_empty.png");
   }
 
-  println("X: " + mouseX + " Y: " + mouseY);
+  //println("X: " + mouseX + " Y: " + mouseY);
 
   if (sceneManager.getCurrentScene().getSceneName() == "intro") {
+    if (!timerStarted) {
+      startTimer = millis();
+      timerStarted = true;
+    }
+    
 
-    timer.timerStarted = true;
-    timer.setTimer(11);
     introduction.play();
     imageMode(CORNER);
     image(introduction, 0, 0);
 
+
+
     lobby.stop();
 
-    if (timer.getTime() <= 0) {
+    if(millis() - startTimer >= 11000) {
 
       try {
 
@@ -462,11 +470,6 @@ void draw()
         println(e.getMessage());
       }
     }
-  }
-
-  if (sceneManager.getCurrentScene().getSceneName() == "bed" && timer.getTime() <= 97 && !textTimer.timerStarted) {
-    textTimer.timerStarted = true;
-    textTimer.setTimer(7);
   }
 
   if (sceneManager.getCurrentScene().getSceneName() == "hallway" && dist(mouseX, mouseY, 975, 545) < 150 && canEscape) {
@@ -498,17 +501,15 @@ void draw()
     try {
 
       sceneManager.goToScene("puddle scene");
-      
+
       new Dialogue("WHAT HAPPENED TO ME?!").draw();
-      
-      if(bomb){
-        
-      puddle.play();
-      
-      bomb = false;
-      
+
+      if (bomb) {
+
+        puddle.play();
+
+        bomb = false;
       }
-      
     }
     catch(Exception e) {
 
