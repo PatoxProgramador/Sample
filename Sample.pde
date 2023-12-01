@@ -1,26 +1,3 @@
-/*Objectives
- **Enough sound to make game scary:
- *- sound for clicking?
- **
- ** Visuals in what is being clicked (visual feedback maybe (object and the pathways))
- **
- ** story (in a form of instructions to help the players know what the hell they are doing)
- ** clues?
- **
- ** time shown a more interactive way (watching the clock on pulse...)
- *- clicking somewhere to look at watch/ hover somewheer to look at watch, or time stays in a fixed place
- **
- ** start screen polishment
- ** GameOver fix and polishment (tweak with time)
- ** introduction polishment
- **
- ** inventory shown?
- **
- ** type more requirements if needed here ---> |
- V
- cursor, music
- 
- */
 import processing.sound.*;
 import processing.video.*;
 
@@ -378,7 +355,7 @@ void draw()
     }
 
     textSize(24);
-    text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
+    //text("Time left: " + nf((int)timer.getTime(), 1), 10, 25);
   }
   //another way of working with time flow (extracted from apple project)
 
