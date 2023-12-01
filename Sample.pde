@@ -93,6 +93,7 @@ SoundFile bang;
 SoundFile ending;
 SoundFile injection;
 SoundFile breaking;
+SoundFile puddle;
 
 boolean scared;
 
@@ -125,6 +126,8 @@ boolean syringeFill = false;
 float fillStarted;
 
 boolean hasSeenBeast = false;
+
+boolean bomb = true;
 
 void settings()
 {
@@ -167,6 +170,7 @@ void setup()
   ending = new SoundFile(this, "ending.wav");
   injection = new SoundFile(this, "injection.wav");
   breaking = new SoundFile(this, "breaking.wav");
+  puddle = new SoundFile(this, "fallingover.wav");
 
   scared = false;
 
@@ -332,7 +336,7 @@ void draw()
 
   if (sceneManager.getCurrentScene().getSceneName() == "quit") exit();
 
-  if (timer.timerStarted && timer.getTime() > 0 && sceneManager.getCurrentScene().getSceneName() != "win scene") {
+  if (timer.timerStarted && timer.getTime() > 0 && sceneManager.getCurrentScene().getSceneName() != "win scene" && !won) {
 
     timer.countDown();
   } else if (gameStarted && timer.getTime() <= 0) {
@@ -382,7 +386,7 @@ void draw()
 
     lastSpawnTime = millis();
 
-    if (gameStarted) tintImage();
+    if (gameStarted && !won) tintImage();
   }
 
   if (sceneManager.getCurrentScene().getSceneName() == "safe") {
@@ -517,6 +521,31 @@ void draw()
     try {
 
       sceneManager.goToScene("puddle scene");
+      
+      pushMatrix();
+  
+      translate(width/2,height - 100);
+  
+      fill(0);
+ 
+      rect(0,0,400,75);
+  
+     fill(255);
+     
+     textAlign(LEFT,CENTER);
+     
+     text("WTF HAPPENED TO ME", 10,0,400,75);
+  
+     popMatrix();
+      
+      if(bomb){
+        
+      puddle.play();
+      
+      bomb = false;
+      
+      }
+      
     }
     catch(Exception e) {
 
